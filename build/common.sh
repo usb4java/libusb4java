@@ -108,6 +108,8 @@ build()
     PKG_CONFIG_PATH="$TMPDIR/lib/pkgconfig" \
     LIBS="$LIBUSB_LIBS" \
     CFLAGS="$CFLAGS $LIBUSB_CFLAGS" \
+    CPPFLAGS="$CPPFLAGS -I$TMPDIR/include" \
+    LDFLAGS="$LDFLAGS -L$TMPDIR/lib" \
     ./configure --prefix="$TMPDIR" --host="$HOST" --with-pic $LIB_CONFIG $LIBUSB_CONFIG
     make
     make install-strip
