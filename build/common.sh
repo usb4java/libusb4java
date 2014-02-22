@@ -82,7 +82,7 @@ build()
 
         # Enable udev support if selected
         LIBUSB_CONFIG="--enable-udev $LIBUSB_CONFIG"
-        USB4JAVA_LIBS="$USB4JAVA_LIBS -ludev"
+        USB4JAVA_LIBS="$USB4JAVA_LIBS -ludev -lrt"
     else
         # Disable udev support if not selected
         LIBUSB_CONFIG="--disable-udev $LIBUSB_CONFIG"
