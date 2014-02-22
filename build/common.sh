@@ -66,7 +66,8 @@ build()
 
         UDEV_CONFIG="--enable-split-usr --disable-gtk-doc --disable-manpages --disable-gudev \
             --disable-introspection --disable-keymap --disable-libkmod --disable-modules \
-            --disable-selinux --disable-rule-generator --disable-blkid $UDEV_CONFIG"
+            --disable-selinux --disable-rule-generator --disable-blkid --disable-shared \
+            $UDEV_CONFIG"
 
         # Unpack and compile udev
         mkdir -p "$TMPDIR"
@@ -81,6 +82,7 @@ build()
 
         # Enable udev support if selected
         LIBUSB_CONFIG="--enable-udev $LIBUSB_CONFIG"
+        USB4JAVA_LIBS="$USB4JAVA_LIBS -ludev"
     else
         # Disable udev support if not selected
         LIBUSB_CONFIG="--disable-udev $LIBUSB_CONFIG"
@@ -125,6 +127,8 @@ build()
     PKG_CONFIG_PATH="$TMPDIR/lib/pkgconfig" \
     LIBS="$USB4JAVA_LIBS" \
     CFLAGS="$CFLAGS $USB4JAVA_CFLAGS" \
+    CPPFLAGS="$CPPFLAGS -I$TMPDIR/include" \
+    LDFLAGS="$LDFLAGS -L$TMPDIR/lib" \
     ./configure --prefix=/ --host="$HOST" $USB4JAVA_CONFIG
     make clean install-strip DESTDIR="$TMPDIR"
 
