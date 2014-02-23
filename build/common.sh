@@ -151,5 +151,5 @@ build()
     jar cf "$JAR" -C "$CLASSESDIR" "$PACKAGE"
 
     # Cleanup
-#    rm -rf "$TMPDIR"
+    rm -rf "$TMPDIR"
 }
