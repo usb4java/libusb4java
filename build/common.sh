@@ -66,8 +66,7 @@ build()
 
         UDEV_CONFIG="--enable-split-usr --disable-gtk-doc --disable-manpages --disable-gudev \
             --disable-introspection --disable-keymap --disable-libkmod --disable-modules \
-            --disable-selinux --disable-rule-generator --disable-blkid --disable-shared \
-            $UDEV_CONFIG"
+            --disable-selinux --disable-rule-generator --disable-blkid $UDEV_CONFIG"
 
         # Unpack and compile udev
         mkdir -p "$TMPDIR"
@@ -152,5 +151,5 @@ build()
     jar cf "$JAR" -C "$CLASSESDIR" "$PACKAGE"
 
     # Cleanup
-    rm -rf "$TMPDIR"
+#    rm -rf "$TMPDIR"
 }
