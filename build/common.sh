@@ -77,8 +77,7 @@ build()
         LIBS="$UDEV_LIBS" \
         CFLAGS="$CFLAGS $UDEV_CFLAGS" \
         ./configure --prefix="$TMPDIR" --host="$HOST" --with-pic $LIB_CONFIG $UDEV_CONFIG
-        make
-        make install-strip
+        make clean install-strip V=1
 
         # Enable udev support if selected
         LIBUSB_CONFIG="--enable-udev $LIBUSB_CONFIG"
@@ -114,8 +113,7 @@ build()
     CPPFLAGS="$CPPFLAGS -I$TMPDIR/include" \
     LDFLAGS="$LDFLAGS -L$TMPDIR/lib" \
     ./configure --prefix="$TMPDIR" --host="$HOST" --with-pic $LIB_CONFIG $LIBUSB_CONFIG
-    make
-    make install-strip
+    make clean install-strip V=1
 
     # Build autoconf stuff of usb4java if needed
     cd "$SRCDIR"
@@ -132,7 +130,7 @@ build()
     CPPFLAGS="$CPPFLAGS -I$TMPDIR/include" \
     LDFLAGS="$LDFLAGS -L$TMPDIR/lib" \
     ./configure --prefix=/ --host="$HOST" $USB4JAVA_CONFIG
-    make clean install-strip DESTDIR="$TMPDIR"
+    make clean install-strip DESTDIR="$TMPDIR" V=1
 
     # Copy dist files to java resources directory
     mkdir -p "$DISTDIR"
