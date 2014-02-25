@@ -73,6 +73,7 @@ build()
         cd "$TMPDIR"
         tar xfz "$DOWNLOADS/$UDEV_ARCHIVE"
         cd "$UDEV_NAME"
+        CC="$CC" \
         LIBS="$UDEV_LIBS" \
         CFLAGS="$CFLAGS $UDEV_CFLAGS" \
         ./configure --prefix="$TMPDIR" --host="$HOST" --with-pic $LIB_CONFIG $UDEV_CONFIG
@@ -106,6 +107,7 @@ build()
     cd "$TMPDIR"
     tar xfj "$DOWNLOADS/$LIBUSB_ARCHIVE"
     cd "$LIBUSB_NAME"
+    CC="$CC" \
     PKG_CONFIG_PATH="$TMPDIR/lib/pkgconfig" \
     LIBS="$LIBUSB_LIBS" \
     CFLAGS="$CFLAGS $LIBUSB_CFLAGS" \
@@ -123,6 +125,7 @@ build()
     fi
 
     # Build libusb4java
+    CC="$CC" \
     PKG_CONFIG_PATH="$TMPDIR/lib/pkgconfig" \
     LIBS="$USB4JAVA_LIBS" \
     CFLAGS="$CFLAGS $USB4JAVA_CFLAGS" \
