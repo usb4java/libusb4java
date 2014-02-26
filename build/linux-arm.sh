@@ -10,6 +10,6 @@ OS="linux"
 ARCH="arm"
 HOST="$ARCH-$OS-gnueabi"
 CFLAGS="-Os"
-UDEV_SUPPORT="no"
+UDEV_SUPPORT="yes"
 
 build
