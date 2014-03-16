@@ -444,8 +444,8 @@ JNIEXPORT void JNICALL METHOD_NAME(Transfer, setBufferNative)
     unsigned char *buffer_ptr = NULL;
     if (buffer)
     {
-        DIRECT_BUFFER(env, buffer, buffer_tmp, return);
-        buffer_ptr = buffer_tmp;
+        buffer_ptr = (*env)->GetDirectBufferAddress(env, buffer);
+        VALIDATE_DIRECT_BUFFER(env, buffer_ptr, "buffer", return);
     }
 
     struct libusb_transfer *transfer = unwrapTransfer(env, this);

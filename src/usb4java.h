@@ -49,12 +49,24 @@
  */
 #define RESET_POINTER(ENV, OBJECT, FIELD) SET_POINTER(ENV, 0, OBJECT, FIELD)
 
-// GetDirectBufferAddress returns NULL if called on a non-direct buffer.
-#define DIRECT_BUFFER(ENV, VAR, BUFFER, ACTION) \
-    unsigned char *BUFFER = (*ENV)->GetDirectBufferAddress(ENV, VAR); \
+/**
+ * Validates that the specified buffer (returned from GetDirectBufferAddress)
+ * is a direct buffer (It will be null if it is not).
+ *
+ * @param ENV
+ *            The Java environment.
+ * @param BUFFER
+ *            The buffer to check.
+ * @param NAME
+ *            The buffer name to use in the exception thrown when the buffer
+ *            is invalid.
+ * @param ACTION
+ *            The action to perform after throwing an exception.
+ */
+#define VALIDATE_DIRECT_BUFFER(ENV, BUFFER, NAME, ACTION) \
     if (!BUFFER) \
     { \
-        illegalArgument(ENV, #VAR" must be a direct buffer"); \
+        illegalArgument(ENV, NAME" must be a direct buffer"); \
         ACTION; \
     }
 
