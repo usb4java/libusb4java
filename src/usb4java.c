@@ -56,12 +56,14 @@ jobject NewDirectReadOnlyByteBuffer(JNIEnv *env, const void *mem,
 
 jint JNICALL JNI_OnLoad(JavaVM *vm, void *reserved)
 {
+    JNIEnv *env;
+    jint getEnvResult;
+
     // Set JVM to the current one.
     jvm = vm;
 
     // Get the current environment.
-    JNIEnv *env;
-    jint getEnvResult = (*vm)->GetEnv(vm, (void **) &env, JNI_VERSION_1_6);
+    getEnvResult = (*vm)->GetEnv(vm, (void **) &env, JNI_VERSION_1_6);
     if (getEnvResult != JNI_OK)
     {
         // Send unrecognized version to signal error and deny library load.

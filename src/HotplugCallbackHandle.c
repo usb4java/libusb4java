@@ -13,12 +13,16 @@ void setHotplugCallbackHandle(JNIEnv* env, const libusb_hotplug_callback_handle 
 
 libusb_hotplug_callback_handle unwrapHotplugCallbackHandle(JNIEnv* env, jobject hotplugHandle)
 {
+    jclass cls;
+    jfieldID field;
+    jlong val;
+
     // Hotplug callback handles are integers, starting at 1. As such, we can use the same logic
     // as for pointers, and consider 0 to be uninitialized/invalid.
     if (!hotplugHandle) return 0;
-    jclass cls = (*env)->GetObjectClass(env, hotplugHandle);
-    jfieldID field = (*env)->GetFieldID(env, cls, "hotplugCallbackHandleValue", "J");
-    jlong val = (*env)->GetLongField(env, hotplugHandle, field);
+    cls = (*env)->GetObjectClass(env, hotplugHandle);
+    field = (*env)->GetFieldID(env, cls, "hotplugCallbackHandleValue", "J");
+    val = (*env)->GetLongField(env, hotplugHandle, field);
     if (!val) illegalState(env, "hotplugCallbackHandleValue is not initialized");
     return (libusb_hotplug_callback_handle) val;
 }

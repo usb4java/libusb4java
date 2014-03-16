@@ -43,12 +43,17 @@ JNIEXPORT jobject JNICALL METHOD_NAME(DeviceList, get)
     JNIEnv *env, jobject this, jint index
 )
 {
-    libusb_device* const *list = unwrapDeviceList(env, this);
+    jclass cls;
+    libusb_device* const *list;
+    jfieldID field;
+    int size;
+
+    list = unwrapDeviceList(env, this);
     if (!list) return NULL;
 
-    jclass cls = (*env)->GetObjectClass(env, this);
-    jfieldID field = (*env)->GetFieldID(env, cls, "size", "I");
-    int size = (*env)->GetIntField(env, this, field);
+    cls = (*env)->GetObjectClass(env, this);
+    field = (*env)->GetFieldID(env, cls, "size", "I");
+    size = (*env)->GetIntField(env, this, field);
     if (index < 0 || index >= size) return NULL;
 
     return wrapDevice(env, list[index]);

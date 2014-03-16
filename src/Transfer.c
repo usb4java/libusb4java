@@ -45,9 +45,12 @@ JNIEXPORT void JNICALL METHOD_NAME(Transfer, setDevHandle)
     JNIEnv *env, jobject this, jobject handle
 )
 {
-    libusb_device_handle *dev_handle = unwrapDeviceHandle(env, handle);
+    struct libusb_transfer *transfer;
+    libusb_device_handle *dev_handle;
+
+    dev_handle = unwrapDeviceHandle(env, handle);
     if (!dev_handle && handle) return;
-    struct libusb_transfer *transfer = unwrapTransfer(env, this);
+    transfer = unwrapTransfer(env, this);
     if (!transfer) return;
 
     transfer->dev_handle = dev_handle;
@@ -237,11 +240,13 @@ JNIEXPORT jint JNICALL METHOD_NAME(Transfer, actualLength)
 
 void cleanupGlobalReferences(JNIEnv *env, jobject obj)
 {
-    struct libusb_transfer *transfer = unwrapTransfer(env, obj);
+    struct libusb_transfer *transfer;
+    struct transfer_data *transferData;
+
+    transfer = unwrapTransfer(env, obj);
     if (!transfer) return;
 
-    struct transfer_data *transferData =
-        ((struct transfer_data *) transfer->user_data);
+    transferData = ((struct transfer_data *) transfer->user_data);
 
     // Cleanup all global references, if any currently exist.
     if (transferData->callbackObject != NULL)
@@ -262,11 +267,13 @@ void cleanupGlobalReferences(JNIEnv *env, jobject obj)
 
 void cleanupCallbackEnable(JNIEnv *env, jobject obj)
 {
-    struct libusb_transfer *transfer = unwrapTransfer(env, obj);
+    struct transfer_data *transferData;
+    struct libusb_transfer *transfer;
+
+    transfer = unwrapTransfer(env, obj);
     if (!transfer) return;
 
-    struct transfer_data *transferData =
-        ((struct transfer_data *) transfer->user_data);
+    transferData = ((struct transfer_data *) transfer->user_data);
 
     transferData->transferObject = (*env)->NewGlobalRef(env, obj);
 
@@ -280,14 +287,15 @@ static void LIBUSB_CALL cleanupCallback(struct libusb_transfer *transfer)
 {
     JNIEnv *env;
     jint result;
+    struct transfer_data *transferData;
+    jobject jTransfer;
 
     THREAD_BEGIN(env, result);
 
-    struct transfer_data *transferData =
-        ((struct transfer_data *) transfer->user_data);
+    transferData = ((struct transfer_data *) transfer->user_data);
 
     // The saved reference to the Java Transfer object.
-    jobject jTransfer = transferData->transferObject;
+    jTransfer = transferData->transferObject;
 
     // Cleanup Java Transfer object too, if requested.
     if (transfer->flags & LIBUSB_TRANSFER_FREE_TRANSFER)
@@ -304,18 +312,21 @@ static void LIBUSB_CALL transferCallback(struct libusb_transfer *transfer)
 {
     JNIEnv *env;
     jint result;
+    struct transfer_data *transferData;
+    jobject jCallback;
+    jmethodID jCallbackMethod;
+    jobject jTransfer;
 
     THREAD_BEGIN(env, result);
 
-    struct transfer_data *transferData =
-        ((struct transfer_data *) transfer->user_data);
+    transferData = ((struct transfer_data *) transfer->user_data);
 
     // The saved references to the Java TransferCallback object.
-    jobject jCallback = transferData->callbackObject;
-    jmethodID jCallbackMethod = transferData->callbackObjectMethod;
+    jCallback = transferData->callbackObject;
+    jCallbackMethod = transferData->callbackObjectMethod;
 
     // The saved reference to the Java Transfer object.
-    jobject jTransfer = transferData->transferObject;
+    jTransfer = transferData->transferObject;
 
     // Read flags before calling the Java method, as it could
     // free the Transfer itself.
@@ -346,11 +357,13 @@ JNIEXPORT void JNICALL METHOD_NAME(Transfer, setCallback)
     JNIEnv *env, jobject this, jobject callback
 )
 {
-    struct libusb_transfer *transfer = unwrapTransfer(env, this);
+    struct transfer_data *transferData;
+    struct libusb_transfer *transfer;
+
+    transfer = unwrapTransfer(env, this);
     if (!transfer) return;
 
-    struct transfer_data *transferData =
-        ((struct transfer_data *) transfer->user_data);
+    transferData = ((struct transfer_data *) transfer->user_data);
 
     if (transferData->transferObject != NULL)
     {
@@ -364,12 +377,15 @@ JNIEXPORT void JNICALL METHOD_NAME(Transfer, setCallback)
 
     if (callback != NULL)
     {
+        jclass cls;
+        jmethodID method;
+
         transferData->transferObject = (*env)->NewGlobalRef(env, this);
 
         transfer->callback = &transferCallback;
 
-        jclass cls = (*env)->GetObjectClass(env, callback);
-        jmethodID method = (*env)->GetMethodID(env, cls, "processTransfer",
+        cls = (*env)->GetObjectClass(env, callback);
+        method = (*env)->GetMethodID(env, cls, "processTransfer",
             "(L"CLASS_PATH("Transfer;)V"));
 
         transferData->callbackObject = (*env)->NewGlobalRef(env, callback);
@@ -403,11 +419,13 @@ JNIEXPORT void JNICALL METHOD_NAME(Transfer, setUserData)
     JNIEnv *env, jobject this, jobject userData
 )
 {
-    struct libusb_transfer *transfer = unwrapTransfer(env, this);
+    struct transfer_data *transferData;
+    struct libusb_transfer *transfer;
+
+    transfer = unwrapTransfer(env, this);
     if (!transfer) return;
 
-    struct transfer_data *transferData =
-        ((struct transfer_data *) transfer->user_data);
+    transferData = ((struct transfer_data *) transfer->user_data);
 
     if (transferData->callbackUserDataObject != NULL)
     {
@@ -447,6 +465,7 @@ JNIEXPORT void JNICALL METHOD_NAME(Transfer, setBufferNative)
     JNIEnv *env, jobject this, jobject buffer
 )
 {
+    struct libusb_transfer *transfer;
     unsigned char *buffer_ptr = NULL;
     if (buffer)
     {
@@ -454,7 +473,7 @@ JNIEXPORT void JNICALL METHOD_NAME(Transfer, setBufferNative)
         VALIDATE_DIRECT_BUFFER(env, buffer_ptr, "buffer", return);
     }
 
-    struct libusb_transfer *transfer = unwrapTransfer(env, this);
+    transfer = unwrapTransfer(env, this);
     if (!transfer) return;
 
     transfer->buffer = buffer_ptr;
