@@ -1282,7 +1282,10 @@ JNIEXPORT jint JNICALL METHOD_NAME(LibUsb, getNextTimeout)
 
 static void LIBUSB_CALL triggerPollfdAdded(int fd, short events, void *user_data)
 {
-    THREAD_BEGIN(env)
+    JNIEnv *env;
+    jint result;
+
+    THREAD_BEGIN(env, result);
 
     jclass fdCls = (*env)->FindClass(env, "java/io/FileDescriptor");
     jmethodID fdConstructor = (*env)->GetMethodID(env, fdCls, "<init>", "(I)V");
@@ -1291,12 +1294,15 @@ static void LIBUSB_CALL triggerPollfdAdded(int fd, short events, void *user_data
     (*env)->CallStaticVoidMethod(env, jClassLibUsb, jMethodTriggerPollfdAdded,
         fdObject, (jint) events, (jlong) (intptr_t) user_data);
 
-    THREAD_END
+    THREAD_END(result);
 }
 
 static void LIBUSB_CALL triggerPollfdRemoved(int fd, void *user_data)
 {
-    THREAD_BEGIN(env)
+    JNIEnv *env;
+    jint result;
+
+    THREAD_BEGIN(env, result);
 
     jclass fdCls = (*env)->FindClass(env, "java/io/FileDescriptor");
     jmethodID fdConstructor = (*env)->GetMethodID(env, fdCls, "<init>", "(I)V");
@@ -1305,7 +1311,7 @@ static void LIBUSB_CALL triggerPollfdRemoved(int fd, void *user_data)
     (*env)->CallStaticVoidMethod(env, jClassLibUsb, jMethodTriggerPollfdRemoved,
         fdObject, (jlong) (intptr_t) user_data);
 
-    THREAD_END
+    THREAD_END(result);
 }
 
 /**
@@ -1417,7 +1423,10 @@ JNIEXPORT jint JNICALL METHOD_NAME(LibUsb, cancelTransfer)
 static int LIBUSB_CALL hotplugCallback(libusb_context *context,
     libusb_device *device, libusb_hotplug_event event, void *user_data)
 {
-    THREAD_BEGIN(env)
+    JNIEnv *env;
+    jint envResult;
+
+    THREAD_BEGIN(env, envResult);
 
     jobject ctx = wrapContext(env, context);
     jobject dev = wrapDevice(env, device);
@@ -1426,7 +1435,7 @@ static int LIBUSB_CALL hotplugCallback(libusb_context *context,
         jClassLibUsb, jMethodHotplugCallback, ctx, dev,
         (jint) event, (jlong) (intptr_t) user_data);
 
-    THREAD_END
+    THREAD_END(envResult);
 
     return result;
 }

@@ -107,15 +107,29 @@
         ACTION; \
     }
 
-#define THREAD_BEGIN(ENV) \
-    JNIEnv *ENV; \
-    jint getEnvResult = (*jvm)->GetEnv(jvm, (void **) &ENV, JNI_VERSION_1_6); \
-    if (getEnvResult == JNI_EDETACHED) \
+/**
+ * Connects the current thread to the Java environment.
+ *
+ * @param ENV
+ *            A variable of type JNIEnv* to connect with the Java environment.
+ * @param RESULT
+ *            A variable of type jint to write the result of the GetEnv
+ *            call to. This value must be passed to the THREAD_END macro at
+ *            the end of the thread.
+ */
+#define THREAD_BEGIN(ENV, RESULT) \
+    RESULT = (*jvm)->GetEnv(jvm, (void **) &ENV, JNI_VERSION_1_6); \
+    if (RESULT == JNI_EDETACHED) \
         (*jvm)->AttachCurrentThread(jvm, (void**) &ENV, NULL);
 
-#define THREAD_END \
-    if (getEnvResult == JNI_EDETACHED) \
-        (*jvm)->DetachCurrentThread(jvm);
+/**
+ * Detaches the Java environment from the current thread.
+ *
+ * @param RESULT
+ *            The result from the GetEnv call made in the THREAD_BEGIN macro.
+ */
+#define THREAD_END(RESULT) \
+    if (RESULT == JNI_EDETACHED) (*jvm)->DetachCurrentThread(jvm);
 
 // JVM access.
 extern JavaVM *jvm;

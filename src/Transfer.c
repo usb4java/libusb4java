@@ -278,7 +278,10 @@ void cleanupCallbackEnable(JNIEnv *env, jobject obj)
 
 static void LIBUSB_CALL cleanupCallback(struct libusb_transfer *transfer)
 {
-    THREAD_BEGIN(env)
+    JNIEnv *env;
+    jint result;
+
+    THREAD_BEGIN(env, result);
 
     struct transfer_data *transferData =
         ((struct transfer_data *) transfer->user_data);
@@ -294,12 +297,15 @@ static void LIBUSB_CALL cleanupCallback(struct libusb_transfer *transfer)
         free(transferData);
     }
 
-    THREAD_END
+    THREAD_END(result);
 }
 
 static void LIBUSB_CALL transferCallback(struct libusb_transfer *transfer)
 {
-    THREAD_BEGIN(env)
+    JNIEnv *env;
+    jint result;
+
+    THREAD_BEGIN(env, result);
 
     struct transfer_data *transferData =
         ((struct transfer_data *) transfer->user_data);
@@ -329,7 +335,7 @@ static void LIBUSB_CALL transferCallback(struct libusb_transfer *transfer)
         (*env)->CallVoidMethod(env, jCallback, jCallbackMethod, jTransfer);
     }
 
-    THREAD_END
+    THREAD_END(result);
 }
 
 /**
