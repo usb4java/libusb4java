@@ -97,8 +97,8 @@ extern jmethodID jMethodHotplugCallback;
 jobject wrapPointer(JNIEnv *env, const void *ptr, const char *className,
     const char *fieldName);
 void * unwrapPointer(JNIEnv *env, jobject object, const char *fieldName);
-jint illegalArgument(JNIEnv *env, const char *message);
-jint illegalState(JNIEnv *env, const char *message);
+jint illegalArgument(JNIEnv *env, const char *message, ...);
+jint illegalState(JNIEnv *env, const char *message, ...);
 jobject NewDirectReadOnlyByteBuffer(JNIEnv *env, const void *mem,
     int mem_length);
 

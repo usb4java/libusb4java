@@ -5,6 +5,8 @@
  */
 
 #include "usb4java.h"
+#include <stdarg.h>
+#include <stdio.h>
 
 JavaVM *jvm = NULL;
 
@@ -13,16 +15,28 @@ jmethodID jMethodTriggerPollfdAdded = NULL;
 jmethodID jMethodTriggerPollfdRemoved = NULL;
 jmethodID jMethodHotplugCallback = NULL;
 
-jint illegalArgument(JNIEnv *env, const char *message)
+jint illegalArgument(JNIEnv *env, const char *message, ...)
 {
-    jclass cls = (*env)->FindClass(env, "java/lang/IllegalArgumentException");
-    return (*env)->ThrowNew(env, cls, message);
+    char tmp[256];
+    va_list args;
+
+    va_start(args, message);
+    vsnprintf(tmp, 256, message, args);
+    va_end(args);
+    return (*env)->ThrowNew(env, (*env)->FindClass(env,
+        "java/lang/IllegalArgumentException"), tmp);
 }
 
-jint illegalState(JNIEnv *env, const char *message)
+jint illegalState(JNIEnv *env, const char *message, ...)
 {
-    jclass cls = (*env)->FindClass(env, "java/lang/IllegalStateException");
-    return (*env)->ThrowNew(env, cls, message);
+    char tmp[256];
+    va_list args;
+
+    va_start(args, message);
+    vsnprintf(tmp, 256, message, args);
+    va_end(args);
+    return (*env)->ThrowNew(env, (*env)->FindClass(env,
+        "java/lang/IllegalStateException"), tmp);
 }
 
 #pragma GCC diagnostic push
@@ -135,11 +149,10 @@ void * unwrapPointer(JNIEnv *env, jobject object, const char *fieldName)
     jptr ptr;
     jclass cls;
     jfieldID field;
-
     if (!object) return NULL;
     cls = (*env)->GetObjectClass(env, object);
     field = (*env)->GetFieldID(env, cls, fieldName, "J");
     ptr = (jptr) (*env)->GetLongField(env, object, field);
-    if (!ptr) illegalState(env, "Pointer is not initialized");
+    if (!ptr) illegalState(env, "%s is not initialized", fieldName);
     return (void *) ptr;
 }
