@@ -70,7 +70,17 @@
         ACTION; \
     }
 
-#define NOT_NULL(ENV, VAR, ACTION) \
+/**
+ * Validates that the specified variable is not null.
+ *
+ * @param ENV
+ *            The Java environment.
+ * @param VAR
+ *            The variable to validate.
+ * @param ACTION
+ *            The action to perform after throwing an exception.
+ */
+#define VALIDATE_NOT_NULL(ENV, VAR, ACTION) \
     if (!VAR) \
     { \
         illegalArgument(ENV, #VAR" must not be null"); \
