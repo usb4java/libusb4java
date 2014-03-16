@@ -14,23 +14,27 @@ static void LIBUSB_CALL transferCallback(struct libusb_transfer *transfer);
 
 jobject wrapTransfer(JNIEnv* env, const struct libusb_transfer* transfer)
 {
-    WRAP_POINTER(env, transfer, "Transfer", "transferPointer");
+    return wrapPointer(env, transfer, CLASS_PATH("Transfer"),
+        "transferPointer");
 }
 
-struct libusb_transfer* unwrapTransfer(JNIEnv* env, jobject obj)
+struct libusb_transfer* unwrapTransfer(JNIEnv* env, jobject transfer)
 {
-    UNWRAP_POINTER(env, obj, struct libusb_transfer*, "transferPointer");
+    return (struct libusb_transfer *) unwrapPointer(env, transfer,
+        "transferPointer");
 }
 
-void resetTransfer(JNIEnv* env, jobject obj)
+void resetTransfer(JNIEnv* env, jobject object)
 {
-    RESET_POINTER(env, obj, "transferPointer");
+    jclass cls;
+    jfieldID field;
 
-    // We already have the class from the previous call.
-    // Reset transferBuffer field to NULL too.
+    RESET_POINTER(env, object, "transferPointer");
+
+    cls = (*env)->GetObjectClass(env, object);
     field = (*env)->GetFieldID(env, cls, "transferBuffer",
         "Ljava/nio/ByteBuffer;");
-    (*env)->SetObjectField(env, obj, field, NULL);
+    (*env)->SetObjectField(env, object, field, NULL);
 }
 
 /**
@@ -360,7 +364,7 @@ JNIEXPORT void JNICALL METHOD_NAME(Transfer, setCallback)
 
         jclass cls = (*env)->GetObjectClass(env, callback);
         jmethodID method = (*env)->GetMethodID(env, cls, "processTransfer",
-            "(L"PACKAGE_DIR"/Transfer;)V");
+            "(L"CLASS_PATH("Transfer;)V"));
 
         transferData->callbackObject = (*env)->NewGlobalRef(env, callback);
         transferData->callbackObjectMethod = method;

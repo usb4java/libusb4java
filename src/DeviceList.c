@@ -8,26 +8,31 @@
 
 void setDeviceList(JNIEnv* env, libusb_device* const *list, jint size, jobject object)
 {
+    jclass cls;
+    jfieldID field;
+
     SET_POINTER(env, list, object, "deviceListPointer");
 
-    // We already have the class from the previous call.
+    cls = (*env)->GetObjectClass(env, object);
     field = (*env)->GetFieldID(env, cls, "size", "I");
     (*env)->SetIntField(env, object, field, size);
 }
 
 libusb_device** unwrapDeviceList(JNIEnv* env, jobject list)
 {
-    UNWRAP_POINTER(env, list, libusb_device**, "deviceListPointer");
+    return (libusb_device **) unwrapPointer(env, list, "deviceListPointer");
 }
 
-void resetDeviceList(JNIEnv* env, jobject obj)
+void resetDeviceList(JNIEnv* env, jobject object)
 {
-    RESET_POINTER(env, obj, "deviceListPointer");
+    jclass cls;
+    jfieldID field;
 
-    // We already have the class from the previous call.
-    // Reset size field to zero too.
+    RESET_POINTER(env, object, "deviceListPointer");
+
+    cls = (*env)->GetObjectClass(env, object);
     field = (*env)->GetFieldID(env, cls, "size", "I");
-    (*env)->SetIntField(env, obj, field, 0);
+    (*env)->SetIntField(env, object, field, 0);
 }
 
 /**

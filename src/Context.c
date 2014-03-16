@@ -12,12 +12,12 @@ void setContext(JNIEnv* env, const libusb_context* context, jobject object)
 
 jobject wrapContext(JNIEnv* env, const libusb_context* context)
 {
-    WRAP_POINTER(env, context, "Context", "contextPointer");
+    return wrapPointer(env, context, CLASS_PATH("Context"), "contextPointer");
 }
 
 libusb_context* unwrapContext(JNIEnv* env, jobject context)
 {
-    UNWRAP_POINTER(env, context, libusb_context*, "contextPointer");
+    return (libusb_context *) unwrapPointer(env, context, "contextPointer");
 }
 
 void resetContext(JNIEnv* env, jobject obj)

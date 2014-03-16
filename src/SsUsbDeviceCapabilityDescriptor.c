@@ -14,9 +14,8 @@ void setSsUsbDeviceCapabilityDescriptor(JNIEnv* env,
 struct libusb_ss_usb_device_capability_descriptor* unwrapSsUsbDeviceCapabilityDescriptor(
     JNIEnv* env, jobject descriptor)
 {
-    UNWRAP_POINTER(env, descriptor,
-         struct libusb_ss_usb_device_capability_descriptor*,
-        "ssUsbDeviceCapabilityDescriptorPointer");
+    return (struct libusb_ss_usb_device_capability_descriptor *) unwrapPointer(
+        env, descriptor, "ssUsbDeviceCapabilityDescriptorPointer");
 }
 
 void resetSsUsbDeviceCapabilityDescriptor(JNIEnv* env, jobject obj)

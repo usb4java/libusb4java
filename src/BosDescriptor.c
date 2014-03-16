@@ -15,7 +15,7 @@ void setBosDescriptor(JNIEnv* env,
 struct libusb_bos_descriptor* unwrapBosDescriptor(JNIEnv* env,
     jobject descriptor)
 {
-    UNWRAP_POINTER(env, descriptor, struct libusb_bos_descriptor*,
+    return (struct libusb_bos_descriptor*) unwrapPointer(env, descriptor,
         "bosDescriptorPointer");
 }
 

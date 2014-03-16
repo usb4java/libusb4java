@@ -56,7 +56,7 @@ jint JNICALL JNI_OnLoad(JavaVM *vm, void *reserved)
 
     // Find classes and methods and cache them.
     // Persistence is guaranteed by global references.
-    jClassLibUsb = (*env)->FindClass(env, PACKAGE_DIR"/LibUsb");
+    jClassLibUsb = (*env)->FindClass(env, CLASS_PATH("LibUsb"));
     jClassLibUsb = (*env)->NewGlobalRef(env, jClassLibUsb);
 
     jMethodTriggerPollfdAdded = (*env)->GetStaticMethodID(env, jClassLibUsb,
@@ -64,7 +64,7 @@ jint JNICALL JNI_OnLoad(JavaVM *vm, void *reserved)
     jMethodTriggerPollfdRemoved = (*env)->GetStaticMethodID(env, jClassLibUsb,
         "triggerPollfdRemoved", "(Ljava/io/FileDescriptor;J)V");
     jMethodHotplugCallback = (*env)->GetStaticMethodID(env, jClassLibUsb,
-        "hotplugCallback", "(L"PACKAGE_DIR"/Context;L"PACKAGE_DIR"/Device;IJ)I");
+        "hotplugCallback", "(L"CLASS_PATH("Context;L")CLASS_PATH("Device;IJ)I"));
 
     return JNI_VERSION_1_6;
 }
@@ -81,4 +81,65 @@ void JNICALL JNI_OnUnload(JavaVM *vm, void *reserved)
 
     // Cleanup all global references.
     (*env)->DeleteGlobalRef(env, jClassLibUsb);
+}
+
+/**
+ * Wrap a C pointer with a wrapper Java class and returns the instance of
+ * this wrapper class. When the C pointer is null or the wrapper class could
+ * not be created then NULL is returned.
+ *
+ * @param env
+ *            The JNI environment.
+ * @param ptr
+ *            The C pointer to wrap.
+ * @param className
+ *            The class name of the wrapper class.
+ * @param fieldName
+ *            The field name for storing the pointer in the wrapper class.
+ * @return The instance of the wrapper class or null if C pointer is null or
+ *         the wrapper class could not be created.
+ */
+jobject wrapPointer(JNIEnv *env, const void *ptr, const char *className,
+    const char *fieldName)
+{
+    jclass cls;
+    jmethodID constructor;
+    jobject object;
+    jfieldID field;
+
+    if (!ptr) return NULL;
+    cls = (*env)->FindClass(env, className);
+    if (cls == NULL) return NULL;
+    constructor = (*env)->GetMethodID(env, cls, "<init>", "()V");
+    if (!constructor) return NULL;
+    object = (*env)->NewObject(env, cls, constructor);
+    field = (*env)->GetFieldID(env, cls, fieldName, "J");
+    (*env)->SetLongField(env, object, field, (jptr) ptr);
+    return object;
+}
+
+/**
+ * Unwraps a C pointer from a Java wrapper object.
+ *
+ * @param env
+ *            The JNI environment.
+ * @param object
+ *            The Java wrapper object.
+ * @param fieldName
+ *            The field name where the C pointer is stored in the wrapper
+ *            object.
+ * @return The C pointer.
+ */
+void * unwrapPointer(JNIEnv *env, jobject object, const char *fieldName)
+{
+    jptr ptr;
+    jclass cls;
+    jfieldID field;
+
+    if (!object) return NULL;
+    cls = (*env)->GetObjectClass(env, object);
+    field = (*env)->GetFieldID(env, cls, fieldName, "J");
+    ptr = (jptr) (*env)->GetLongField(env, object, field);
+    if (!ptr) illegalState(env, "Pointer is not initialized");
+    return (void *) ptr;
 }

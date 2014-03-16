@@ -15,9 +15,8 @@ void setSsEndpointCompanionDescriptor(JNIEnv* env,
 struct libusb_ss_endpoint_companion_descriptor*
     unwrapSsEndpointCompanionDescriptor(JNIEnv* env, jobject descriptor)
 {
-    UNWRAP_POINTER(env, descriptor,
-        struct libusb_ss_endpoint_companion_descriptor*,
-        "ssEndpointCompanionDescriptorPointer");
+    return (struct libusb_ss_endpoint_companion_descriptor *) unwrapPointer(
+        env, descriptor, "ssEndpointCompanionDescriptorPointer");
 }
 
 void resetSsEndpointCompanionDescriptor(JNIEnv* env, jobject obj)

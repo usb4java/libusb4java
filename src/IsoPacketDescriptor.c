@@ -8,7 +8,7 @@
 jobject wrapIsoPacketDescriptor(JNIEnv *env,
     const struct libusb_iso_packet_descriptor *descriptor)
 {
-    WRAP_POINTER(env, descriptor, "IsoPacketDescriptor",
+    return wrapPointer(env, descriptor, CLASS_PATH("IsoPacketDescriptor"),
         "isoPacketDescriptorPointer");
 }
 
@@ -16,7 +16,7 @@ jobjectArray wrapIsoPacketDescriptors(JNIEnv *env, int count,
     const struct libusb_iso_packet_descriptor *descriptors)
 {
     jobjectArray array = (jobjectArray) (*env)->NewObjectArray(env, count,
-        (*env)->FindClass(env, PACKAGE_DIR"/IsoPacketDescriptor"), NULL);
+        (*env)->FindClass(env, CLASS_PATH("IsoPacketDescriptor")), NULL);
 
     for (int i = 0; i < count; i++)
         (*env)->SetObjectArrayElement(env, array, i,
@@ -26,10 +26,10 @@ jobjectArray wrapIsoPacketDescriptors(JNIEnv *env, int count,
 }
 
 struct libusb_iso_packet_descriptor *unwrapIsoPacketDescriptor(JNIEnv *env,
-    jobject obj)
+    jobject descriptor)
 {
-    UNWRAP_POINTER(env, obj, struct libusb_iso_packet_descriptor*,
-        "isoPacketDescriptorPointer");
+    return (struct libusb_iso_packet_descriptor *) unwrapPointer(env,
+        descriptor, "isoPacketDescriptorPointer");
 }
 
 /**

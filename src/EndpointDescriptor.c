@@ -8,14 +8,15 @@
 jobject wrapEndpointDescriptor(JNIEnv *env,
     const struct libusb_endpoint_descriptor *descriptor)
 {
-    WRAP_POINTER(env, descriptor, "EndpointDescriptor", "endpointDescriptorPointer");
+    return wrapPointer(env, descriptor, CLASS_PATH("EndpointDescriptor"),
+        "endpointDescriptorPointer");
 }
 
 jobjectArray wrapEndpointDescriptors(JNIEnv *env, int count,
     const struct libusb_endpoint_descriptor *descriptors)
 {
     jobjectArray array = (jobjectArray) (*env)->NewObjectArray(env,
-        count, (*env)->FindClass(env, PACKAGE_DIR"/EndpointDescriptor"),
+        count, (*env)->FindClass(env, CLASS_PATH("EndpointDescriptor")),
         NULL);
 
     for (int i = 0; i < count; i++)
@@ -26,9 +27,10 @@ jobjectArray wrapEndpointDescriptors(JNIEnv *env, int count,
 }
 
 struct libusb_endpoint_descriptor *unwrapEndpointDescriptor(JNIEnv *env,
-    jobject obj)
+    jobject descriptor)
 {
-    UNWRAP_POINTER(env, obj, struct libusb_endpoint_descriptor*, "endpointDescriptorPointer");
+    return (struct libusb_endpoint_descriptor *) unwrapPointer(env,
+        descriptor, "endpointDescriptorPointer");
 }
 
 /**

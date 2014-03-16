@@ -14,9 +14,8 @@ void setUsb20ExtensionDescriptor(JNIEnv* env,
 struct libusb_usb_2_0_extension_descriptor* unwrapUsb20ExtensionDescriptor(
     JNIEnv* env, jobject descriptor)
 {
-    UNWRAP_POINTER(env, descriptor,
-         struct libusb_usb_2_0_extension_descriptor*,
-        "usb20ExtensionDescriptorPointer");
+    return (struct libusb_usb_2_0_extension_descriptor *) unwrapPointer(env,
+        descriptor, "usb20ExtensionDescriptorPointer");
 }
 
 void resetUsb20ExtensionDescriptor(JNIEnv* env, jobject obj)

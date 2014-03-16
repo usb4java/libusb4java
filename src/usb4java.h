@@ -12,6 +12,7 @@
 #include "config.h"
 
 #define PACKAGE_DIR "org/usb4java"
+#define CLASS_PATH(CLASS_NAME) PACKAGE_DIR"/"CLASS_NAME
 #define METHOD_NAME(CLASS_NAME, METHOD_NAME) Java_org_usb4java_##CLASS_NAME##_##METHOD_NAME
 
 #if SIZEOF_VOID_P == 4
@@ -21,33 +22,12 @@
 #endif
 
 #define SET_POINTER(ENV, PTR, OBJECT, FIELD) \
-    jclass cls = (*ENV)->GetObjectClass(ENV, OBJECT); \
-    jfieldID field = (*ENV)->GetFieldID(ENV, cls, FIELD, "J"); \
-    (*ENV)->SetLongField(ENV, OBJECT, field, (jptr) PTR);
+    (*ENV)->SetLongField(ENV, OBJECT, (*ENV)->GetFieldID(ENV, \
+        (*ENV)->GetObjectClass(ENV, OBJECT), FIELD, "J"), (jptr) PTR);
 
 #define RESET_POINTER(ENV, OBJECT, FIELD) \
-    jclass cls = (*ENV)->GetObjectClass(ENV, OBJECT); \
-    jfieldID field = (*ENV)->GetFieldID(ENV, cls, FIELD, "J"); \
-    (*ENV)->SetLongField(ENV, OBJECT, field, 0);
-
-#define WRAP_POINTER(ENV, PTR, CLASS_NAME, FIELD) \
-    if (!PTR) return NULL; \
-    jclass cls = (*ENV)->FindClass(ENV, PACKAGE_DIR"/"CLASS_NAME); \
-    if (cls == NULL) return NULL; \
-    jmethodID constructor = (*ENV)->GetMethodID(ENV, cls, "<init>", "()V"); \
-    if (constructor == NULL) return NULL; \
-    jobject object = (*ENV)->NewObject(ENV, cls, constructor); \
-    jfieldID field = (*ENV)->GetFieldID(ENV, cls, FIELD, "J"); \
-    (*ENV)->SetLongField(ENV, object, field, (jptr) PTR); \
-    return object;
-
-#define UNWRAP_POINTER(ENV, OBJECT, TYPE, FIELD) \
-    if (!OBJECT) return NULL; \
-    jclass cls = (*ENV)->GetObjectClass(ENV, OBJECT); \
-    jfieldID field = (*ENV)->GetFieldID(ENV, cls, FIELD, "J"); \
-    jptr ptr = (jptr) (*ENV)->GetLongField(ENV, OBJECT, field); \
-    if (!ptr) illegalState(ENV, FIELD" is not initialized"); \
-    return (TYPE) ptr;
+    (*ENV)->SetLongField(ENV, OBJECT, (*ENV)->GetFieldID(ENV, \
+        (*ENV)->GetObjectClass(ENV, OBJECT), FIELD, "J"), 0);
 
 // GetDirectBufferAddress returns NULL if called on a non-direct buffer.
 #define DIRECT_BUFFER(ENV, VAR, BUFFER, ACTION) \
@@ -94,6 +74,9 @@ extern jmethodID jMethodTriggerPollfdAdded;
 extern jmethodID jMethodTriggerPollfdRemoved;
 extern jmethodID jMethodHotplugCallback;
 
+jobject wrapPointer(JNIEnv *env, const void *ptr, const char *className,
+    const char *fieldName);
+void * unwrapPointer(JNIEnv *env, jobject object, const char *fieldName);
 jint illegalArgument(JNIEnv *env, const char *message);
 jint illegalState(JNIEnv *env, const char *message);
 jobject NewDirectReadOnlyByteBuffer(JNIEnv *env, const void *mem,

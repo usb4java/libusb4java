@@ -7,12 +7,13 @@
 
 jobject wrapVersion(JNIEnv* env, const struct libusb_version* pointer)
 {
-    WRAP_POINTER(env, pointer, "Version", "versionPointer");
+    return wrapPointer(env, pointer, CLASS_PATH("Version"), "versionPointer");
 }
 
-const struct libusb_version* unwrapVersion(JNIEnv* env, jobject object)
+const struct libusb_version* unwrapVersion(JNIEnv* env, jobject version)
 {
-    UNWRAP_POINTER(env, object, const struct libusb_version*, "versionPointer");
+    return (struct libusb_version *) unwrapPointer(env, version,
+        "versionPointer");
 }
 
 /**
@@ -79,5 +80,3 @@ JNIEXPORT jstring JNICALL METHOD_NAME(Version, rc)
     if (!version) return NULL;
     return (*env)->NewStringUTF(env, version->rc);
 }
-
-

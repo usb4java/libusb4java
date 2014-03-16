@@ -13,12 +13,14 @@ void setDeviceHandle(JNIEnv* env, const libusb_device_handle* deviceHandle,
 
 jobject wrapDeviceHandle(JNIEnv* env, const libusb_device_handle* deviceHandle)
 {
-    WRAP_POINTER(env, deviceHandle, "DeviceHandle", "deviceHandlePointer");
+    return wrapPointer(env, deviceHandle, CLASS_PATH("DeviceHandle"),
+        "deviceHandlePointer");
 }
 
 libusb_device_handle* unwrapDeviceHandle(JNIEnv* env, jobject deviceHandle)
 {
-    UNWRAP_POINTER(env, deviceHandle, libusb_device_handle*, "deviceHandlePointer");
+    return (libusb_device_handle *) unwrapPointer(env, deviceHandle,
+        "deviceHandlePointer");
 }
 
 void resetDeviceHandle(JNIEnv* env, jobject object)

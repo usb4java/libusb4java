@@ -7,12 +7,12 @@
 
 jobject wrapDevice(JNIEnv* env, const libusb_device* device)
 {
-    WRAP_POINTER(env, device, "Device", "devicePointer");
+    return wrapPointer(env, device, CLASS_PATH("Device"), "devicePointer");
 }
 
 libusb_device* unwrapDevice(JNIEnv* env, jobject device)
 {
-    UNWRAP_POINTER(env, device, libusb_device*, "devicePointer");
+    return (libusb_device *) unwrapPointer(env, device, "devicePointer");
 }
 
 void resetDevice(JNIEnv* env, jobject object)

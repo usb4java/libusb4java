@@ -10,7 +10,7 @@
 jobject wrapInterfaceDescriptor(JNIEnv *env,
     const struct libusb_interface_descriptor *descriptor)
 {
-    WRAP_POINTER(env, descriptor, "InterfaceDescriptor",
+    return wrapPointer(env, descriptor, CLASS_PATH("InterfaceDescriptor"),
         "interfaceDescriptorPointer");
 }
 
@@ -18,7 +18,7 @@ jobjectArray wrapInterfaceDescriptors(JNIEnv *env, int count,
     const struct libusb_interface_descriptor *descriptors)
 {
     jobjectArray array = (jobjectArray) (*env)->NewObjectArray(env,
-        count, (*env)->FindClass(env, PACKAGE_DIR"/InterfaceDescriptor"),
+        count, (*env)->FindClass(env, CLASS_PATH("InterfaceDescriptor")),
         NULL);
     for (int i = 0; i < count; i++)
         (*env)->SetObjectArrayElement(env, array, i,
@@ -28,10 +28,10 @@ jobjectArray wrapInterfaceDescriptors(JNIEnv *env, int count,
 }
 
 struct libusb_interface_descriptor *unwrapInterfaceDescriptor(JNIEnv *env,
-    jobject obj)
+    jobject descriptor)
 {
-    UNWRAP_POINTER(env, obj, struct libusb_interface_descriptor*,
-        "interfaceDescriptorPointer");
+    return (struct libusb_interface_descriptor *) unwrapPointer(env,
+        descriptor, "interfaceDescriptorPointer");
 }
 
 /**

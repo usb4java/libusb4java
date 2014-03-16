@@ -15,7 +15,7 @@ void setConfigDescriptor(JNIEnv* env,
 struct libusb_config_descriptor* unwrapConfigDescriptor(JNIEnv* env,
     jobject descriptor)
 {
-    UNWRAP_POINTER(env, descriptor, struct libusb_config_descriptor*,
+    return (struct libusb_config_descriptor*) unwrapPointer(env, descriptor,
         "configDescriptorPointer");
 }
 

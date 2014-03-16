@@ -14,9 +14,8 @@ void setContainerIdDescriptor(JNIEnv* env,
 struct libusb_container_id_descriptor* unwrapContainerIdDescriptor(
     JNIEnv* env, jobject descriptor)
 {
-    UNWRAP_POINTER(env, descriptor,
-         struct libusb_container_id_descriptor*,
-        "containerIdDescriptorPointer");
+    return (struct libusb_container_id_descriptor*) unwrapPointer(env,
+        descriptor, "containerIdDescriptorPointer");
 }
 
 void resetContainerIdDescriptor(JNIEnv* env, jobject obj)

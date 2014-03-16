@@ -14,6 +14,7 @@
  */
 
 #include <stdlib.h>
+#include <stdio.h>
 #include <time.h>
 #include "usb4java.h"
 #include "Version.h"
