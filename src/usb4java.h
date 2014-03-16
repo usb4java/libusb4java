@@ -87,11 +87,21 @@
         ACTION; \
     }
 
-#define NOT_SET(ENV, VAR, FIELD, ACTION) \
-    jclass cls = (*ENV)->GetObjectClass(ENV, VAR); \
-    jfieldID field = (*ENV)->GetFieldID(ENV, cls, FIELD, "J"); \
-    jptr ptr = (jptr) (*ENV)->GetLongField(ENV, VAR, field); \
-    if (ptr) \
+/**
+ * Validates that the specified field is not already set.
+ *
+ * @param ENV
+ *            The Java environment.
+ * @param OBJECT
+ *            The object.
+ * @param FIELD
+ *            The field name.
+ * @param ACTION
+ *            The action to perform after throwing an exception.
+ */
+#define VALIDATE_POINTER_NOT_SET(ENV, OBJECT, FIELD, ACTION) \
+    if ((*ENV)->GetLongField(ENV, OBJECT, (*ENV)->GetFieldID(ENV, \
+        (*ENV)->GetObjectClass(ENV, OBJECT), FIELD, "J"))) \
     { \
         illegalState(ENV, FIELD" is already initialized"); \
         ACTION; \

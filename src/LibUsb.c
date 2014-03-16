@@ -74,7 +74,7 @@ JNIEXPORT jint JNICALL METHOD_NAME(LibUsb, init)
     }
     else
     {
-        NOT_SET(env, context, "contextPointer", return 0);
+        VALIDATE_POINTER_NOT_SET(env, context, "contextPointer", return 0);
 
         libusb_context *ctx;
         int result = libusb_init(&ctx);
@@ -136,7 +136,7 @@ JNIEXPORT jint JNICALL METHOD_NAME(LibUsb, getDeviceList)
 )
 {
     VALIDATE_NOT_NULL(env, deviceList, return 0);
-    NOT_SET(env, deviceList, "deviceListPointer", return 0);
+    VALIDATE_POINTER_NOT_SET(env, deviceList, "deviceListPointer", return 0);
     libusb_context *ctx = unwrapContext(env, context);
     if (!ctx && context) return 0;
     libusb_device **list;
@@ -317,7 +317,7 @@ JNIEXPORT jint JNICALL METHOD_NAME(LibUsb, open)
 {
     VALIDATE_NOT_NULL(env, device, return 0);
     VALIDATE_NOT_NULL(env, handle, return 0);
-    NOT_SET(env, handle, "deviceHandlePointer", return 0);
+    VALIDATE_POINTER_NOT_SET(env, handle, "deviceHandlePointer", return 0);
     libusb_device *dev = unwrapDevice(env, device);
     if (!dev) return 0;
     libusb_device_handle *deviceHandle;
@@ -687,7 +687,7 @@ JNIEXPORT jint JNICALL METHOD_NAME(LibUsb, getActiveConfigDescriptor)
 {
     VALIDATE_NOT_NULL(env, device, return 0);
     VALIDATE_NOT_NULL(env, descriptor, return 0);
-    NOT_SET(env, descriptor, "configDescriptorPointer", return 0);
+    VALIDATE_POINTER_NOT_SET(env, descriptor, "configDescriptorPointer", return 0);
     libusb_device *dev = unwrapDevice(env, device);
     if (!dev) return 0;
     struct libusb_config_descriptor *config;
@@ -706,7 +706,7 @@ JNIEXPORT jint JNICALL METHOD_NAME(LibUsb, getConfigDescriptor)
 {
     VALIDATE_NOT_NULL(env, device, return 0);
     VALIDATE_NOT_NULL(env, descriptor, return 0);
-    NOT_SET(env, descriptor, "configDescriptorPointer", return 0);
+    VALIDATE_POINTER_NOT_SET(env, descriptor, "configDescriptorPointer", return 0);
     libusb_device *dev = unwrapDevice(env, device);
     if (!dev) return 0;
     struct libusb_config_descriptor *config;
@@ -725,7 +725,7 @@ JNIEXPORT jint JNICALL METHOD_NAME(LibUsb, getConfigDescriptorByValue)
 {
     VALIDATE_NOT_NULL(env, device, return 0);
     VALIDATE_NOT_NULL(env, descriptor, return 0);
-    NOT_SET(env, descriptor, "configDescriptorPointer", return 0);
+    VALIDATE_POINTER_NOT_SET(env, descriptor, "configDescriptorPointer", return 0);
     libusb_device *dev = unwrapDevice(env, device);
     if (!dev) return 0;
     struct libusb_config_descriptor *config;
@@ -764,7 +764,7 @@ JNIEXPORT jint JNICALL METHOD_NAME(LibUsb, getSsEndpointCompanionDescriptor)
     if (!ctx && context) return 0;
     VALIDATE_NOT_NULL(env, endpointDescriptor, return 0);
     VALIDATE_NOT_NULL(env, companionDescriptor, return 0);
-    NOT_SET(env, companionDescriptor, "ssEndpointCompanionDescriptorPointer", return 0);
+    VALIDATE_POINTER_NOT_SET(env, companionDescriptor, "ssEndpointCompanionDescriptorPointer", return 0);
 
     struct libusb_endpoint_descriptor *endpoint_descriptor =
         unwrapEndpointDescriptor(env, endpointDescriptor);
@@ -803,7 +803,7 @@ JNIEXPORT jint JNICALL METHOD_NAME(LibUsb, getBosDescriptor)
 {
     VALIDATE_NOT_NULL(env, handle, return 0);
     VALIDATE_NOT_NULL(env, bosDescriptor, return 0);
-    NOT_SET(env, bosDescriptor, "bosDescriptorPointer", return 0);
+    VALIDATE_POINTER_NOT_SET(env, bosDescriptor, "bosDescriptorPointer", return 0);
 
     libusb_device_handle *dev_handle = unwrapDeviceHandle(env, handle);
     if (!dev_handle) return 0;
@@ -842,7 +842,7 @@ JNIEXPORT jint JNICALL METHOD_NAME(LibUsb, getUsb20ExtensionDescriptor)
     if (!ctx && context) return 0;
     VALIDATE_NOT_NULL(env, devCapDescriptor, return 0);
     VALIDATE_NOT_NULL(env, extensionDescriptor, return 0);
-    NOT_SET(env, extensionDescriptor, "usb20ExtensionDescriptorPointer", return 0);
+    VALIDATE_POINTER_NOT_SET(env, extensionDescriptor, "usb20ExtensionDescriptorPointer", return 0);
 
     struct libusb_bos_dev_capability_descriptor *devcap_descriptor =
         unwrapBosDevCapabilityDescriptor(env, devCapDescriptor);
@@ -884,7 +884,7 @@ JNIEXPORT jint JNICALL METHOD_NAME(LibUsb, getSsUsbDeviceCapabilityDescriptor)
     if (!ctx && context) return 0;
     VALIDATE_NOT_NULL(env, devCapDescriptor, return 0);
     VALIDATE_NOT_NULL(env, ssUsbDeviceCapabilityDescriptor, return 0);
-    NOT_SET(env, ssUsbDeviceCapabilityDescriptor, "ssUsbDeviceCapabilityDescriptorPointer", return 0);
+    VALIDATE_POINTER_NOT_SET(env, ssUsbDeviceCapabilityDescriptor, "ssUsbDeviceCapabilityDescriptorPointer", return 0);
 
     struct libusb_bos_dev_capability_descriptor *devcap_descriptor =
         unwrapBosDevCapabilityDescriptor(env, devCapDescriptor);
@@ -926,7 +926,7 @@ JNIEXPORT jint JNICALL METHOD_NAME(LibUsb, getContainerIdDescriptor)
     if (!ctx && context) return 0;
     VALIDATE_NOT_NULL(env, devCapDescriptor, return 0);
     VALIDATE_NOT_NULL(env, containerIdDescriptor, return 0);
-    NOT_SET(env, containerIdDescriptor, "containerIdDescriptorPointer", return 0);
+    VALIDATE_POINTER_NOT_SET(env, containerIdDescriptor, "containerIdDescriptorPointer", return 0);
 
     struct libusb_bos_dev_capability_descriptor *devcap_descriptor =
         unwrapBosDevCapabilityDescriptor(env, devCapDescriptor);
@@ -1448,7 +1448,7 @@ JNIEXPORT jint JNICALL METHOD_NAME(LibUsb, hotplugRegisterCallbackNative)
     if (callbackHandle != NULL)
     {
         // If callbackHandle is set, the Java object must be fresh/empty.
-        NOT_SET(env, callbackHandle, "hotplugCallbackHandleValue", return 0);
+        VALIDATE_POINTER_NOT_SET(env, callbackHandle, "hotplugCallbackHandleValue", return 0);
     }
 
     // Register the callback.
