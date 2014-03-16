@@ -21,13 +21,33 @@
 #  define jptr jlong
 #endif
 
+/**
+ * Sets a pointer address in an object field.
+ *
+ * @param ENV
+ *            The Java environment.
+ * @param PTR
+ *            The pointer address to set.
+ * @param OBJECT
+ *            The Java object.
+ * @param FIELD
+ *            The Java object field name.
+ */
 #define SET_POINTER(ENV, PTR, OBJECT, FIELD) \
     (*ENV)->SetLongField(ENV, OBJECT, (*ENV)->GetFieldID(ENV, \
         (*ENV)->GetObjectClass(ENV, OBJECT), FIELD, "J"), (jptr) PTR);
 
-#define RESET_POINTER(ENV, OBJECT, FIELD) \
-    (*ENV)->SetLongField(ENV, OBJECT, (*ENV)->GetFieldID(ENV, \
-        (*ENV)->GetObjectClass(ENV, OBJECT), FIELD, "J"), 0);
+/**
+ * Resets a pointer address in an object field to 0.
+ *
+ * @param ENV
+ *            The Java environment.
+ * @param OBJECT
+ *            The Java object.
+ * @param FIELD
+ *            The Java object field name.
+ */
+#define RESET_POINTER(ENV, OBJECT, FIELD) SET_POINTER(ENV, 0, OBJECT, FIELD)
 
 // GetDirectBufferAddress returns NULL if called on a non-direct buffer.
 #define DIRECT_BUFFER(ENV, VAR, BUFFER, ACTION) \
