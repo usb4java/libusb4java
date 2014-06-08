@@ -1123,7 +1123,7 @@ JNIEXPORT jint JNICALL METHOD_NAME(LibUsb, bulkTransfer)
     data_size = (*env)->GetDirectBufferCapacity(env, data);
     result = libusb_bulk_transfer(dev_handle, (unsigned char) endpoint,
         data_ptr, (int) data_size, &sent, (unsigned int) timeout);
-    if (result == LIBUSB_SUCCESS)
+    if (result == LIBUSB_SUCCESS || result == LIBUSB_ERROR_TIMEOUT)
     {
         jclass cls;
         jmethodID method;
@@ -1161,7 +1161,7 @@ JNIEXPORT jint JNICALL METHOD_NAME(LibUsb, interruptTransfer)
     data_size = (*env)->GetDirectBufferCapacity(env, data);
     result = libusb_interrupt_transfer(dev_handle, (unsigned char) endpoint,
         data_ptr, (int) data_size, &sent, (unsigned int) timeout);
-    if (result == LIBUSB_SUCCESS)
+    if (result == LIBUSB_SUCCESS || result == LIBUSB_ERROR_TIMEOUT)
     {
         jclass cls;
         jmethodID method;
