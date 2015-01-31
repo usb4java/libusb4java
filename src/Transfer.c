@@ -531,3 +531,31 @@ JNIEXPORT jobjectArray JNICALL METHOD_NAME(Transfer, isoPacketDesc)
     return wrapIsoPacketDescriptors(env, transfer->num_iso_packets,
         transfer->iso_packet_desc);
 }
+
+/**
+ * void setStreamId(int)
+ */
+JNIEXPORT void JNICALL METHOD_NAME(Transfer, setStreamId)
+(
+    JNIEnv *env, jobject this, jint streamId
+)
+{
+    struct libusb_transfer *transfer = unwrapTransfer(env, this);
+    if (!transfer) return;
+
+    libusb_transfer_set_stream_id(transfer, (uint32_t) streamId);
+}
+
+/**
+ * int streamId()
+ */
+JNIEXPORT jint JNICALL METHOD_NAME(Transfer, streamId)
+(
+    JNIEnv *env, jobject this
+)
+{
+    struct libusb_transfer *transfer = unwrapTransfer(env, this);
+    if (!transfer) return 0;
+
+    return (jint) libusb_transfer_get_stream_id(transfer);
+}

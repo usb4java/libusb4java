@@ -531,6 +531,73 @@ JNIEXPORT jint JNICALL METHOD_NAME(LibUsb, resetDevice)
 }
 
 /**
+ * int allocStreams(DeviceHandle, int, byte[]);
+ */
+JNIEXPORT jint JNICALL METHOD_NAME(LibUsb, allocStreams)
+(
+    JNIEnv *env, jclass class, jobject handle, jint numStreams,
+    jbyteArray endpoints
+)
+{
+    libusb_device_handle *dev_handle;
+    jbyte *endpointElements;
+    int returnValue;
+
+    VALIDATE_NOT_NULL(env, handle, return 0);
+    VALIDATE_NOT_NULL(env, endpoints, return 0);
+
+    dev_handle = unwrapDeviceHandle(env, handle);
+    if (!dev_handle) return 0;
+
+    endpointElements = (*env)->GetByteArrayElements(env, endpoints, NULL);
+    if (!endpointElements) {
+        illegalState(env, "failed to get 'endpoints' byte array elements");
+        return 0;
+    }
+
+    returnValue = libusb_alloc_streams(dev_handle, (uint32_t) numStreams,
+        (unsigned char *) endpointElements,
+        (*env)->GetArrayLength(env, endpoints));
+
+    (*env)->ReleaseByteArrayElements(env, endpoints, endpointElements, 0);
+
+    return returnValue;
+}
+
+/**
+ * int freeStreams(DeviceHandle, byte[]);
+ */
+JNIEXPORT jint JNICALL METHOD_NAME(LibUsb, freeStreams)
+(
+    JNIEnv *env, jclass class, jobject handle, jbyteArray endpoints
+)
+{
+    libusb_device_handle *dev_handle;
+    jbyte *endpointElements;
+    int returnValue;
+
+    VALIDATE_NOT_NULL(env, handle, return 0);
+    VALIDATE_NOT_NULL(env, endpoints, return 0);
+
+    dev_handle = unwrapDeviceHandle(env, handle);
+    if (!dev_handle) return 0;
+
+    endpointElements = (*env)->GetByteArrayElements(env, endpoints, NULL);
+    if (!endpointElements) {
+        illegalState(env, "failed to get 'endpoints' byte array elements");
+        return 0;
+    }
+
+    returnValue = libusb_free_streams(dev_handle,
+        (unsigned char *) endpointElements,
+        (*env)->GetArrayLength(env, endpoints));
+
+    (*env)->ReleaseByteArrayElements(env, endpoints, endpointElements, 0);
+
+    return returnValue;
+}
+
+/**
  * int kernelDriverActive(DeviceHandle, int)
  */
 JNIEXPORT jint JNICALL METHOD_NAME(LibUsb, kernelDriverActive)
