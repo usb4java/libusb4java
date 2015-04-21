@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 2.8)
 project(usb4java C)
+set(PROJECT_VERSION 1.2.1)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/.cmake/Modules/")
 if(CMAKE_COMPILER_IS_GNUCC)
     set(CMAKE_C_FLAGS "-Wall -Werror -std=c99")
