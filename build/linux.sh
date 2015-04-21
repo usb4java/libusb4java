@@ -20,10 +20,10 @@ EUDEV_VERSION=3.0
 CURRENT=$(realpath $(dirname $0))
 PROJECT_DIR="$CURRENT/.."
 OS=linux
-if [ "$(arch)" == "x86_64" ]
+if [ "$(arch)" = "x86_64" ]
 then
     ARCH=x86_64
-elif [ "$(arch)" == "armv7l" ]
+elif [ "$(arch)" = "armv7l" ]
 then
     ARCH=arm    
 else
