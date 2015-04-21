@@ -8,17 +8,16 @@
 #define USB4JAVA_H
 
 #include <jni.h>
-#include <libusb.h>
-#include "config.h"
+#include <libusb-1.0/libusb.h>
 
 #define PACKAGE_DIR "org/usb4java"
 #define CLASS_PATH(CLASS_NAME) PACKAGE_DIR"/"CLASS_NAME
 #define METHOD_NAME(CLASS_NAME, METHOD_NAME) Java_org_usb4java_##CLASS_NAME##_##METHOD_NAME
 
 #if SIZEOF_VOID_P == 4
-#  define jptr jint
+# define jptr jint
 #elif SIZEOF_VOID_P == 8
-#  define jptr jlong
+# define jptr jlong
 #endif
 
 /**

@@ -39,8 +39,6 @@ jint illegalState(JNIEnv *env, const char *message, ...)
         "java/lang/IllegalStateException"), tmp);
 }
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wcast-qual"
 jobject NewDirectReadOnlyByteBuffer(JNIEnv *env, const void *mem,
     int mem_length)
 {
@@ -52,7 +50,6 @@ jobject NewDirectReadOnlyByteBuffer(JNIEnv *env, const void *mem,
         "()Ljava/nio/ByteBuffer;");
     return (*env)->CallObjectMethod(env, buffer, method);
 }
-#pragma GCC diagnostic pop
 
 jint JNICALL JNI_OnLoad(JavaVM *vm, void *reserved)
 {

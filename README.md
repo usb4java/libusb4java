@@ -10,17 +10,18 @@ already includes pre-compiled libraries for the following platforms:
 * osx-x86_64
 
 If you need the library on an other platform then you can easily compile it
-yourself. On a Unix-compatible operating system you only need the Java JDK,
-the libusb(x) library version 1.0.16 or higher and the GNU C compiler. 
-When everything is correctly installed then you should be able to build the 
+yourself.  On a Unix-compatible operating system you only need the Java JDK,
+an up-to-date libusb library version, the GNU C compiler and cmake.  When
+everything is correctly installed then you should be able to build the
 library with the following commands:
 
-  $ ./configure
-  $ make
+    $ mkdir build
+    $ cd build
+    $ cmake ..
+    $ make
   
 When compilation was successful then you can find the library in the
-`src/.libs` directory. Rename the file so it doesn't include any version
-number (Examples: libusb4java.so, libusb4java.dylib, libusb4java.dll).
+`build/src` directory.
 
 usb4java searches for the library in the CLASSPATH directory
 `org/libusb4java/<OS>-<ARCH>/`. On a 32 bit x86 linux machine for
