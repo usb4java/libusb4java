@@ -39,8 +39,8 @@ set LIBUSB_NAME=libusb-%LIBUSB_VERSION%
 set LIBUSB_ARCHIVE=%LIBUSB_NAME%%LIBUSB_RC%-win.7z
 mkdir "%ROOT_DIR%"
 cd "%ROOT_DIR%
-curl -L -o "%LIBUSB_ARCHIVE%" ftp://ftp.heanet.ie/pub/download.sourceforge.net/pub/sourceforge/l/li/libusb/libusb-1.0/%LIBUSB_NAME%/%LIBUSB_ARCHIVE%
-7z -y x "%LIBUSB_ARCHIVE%"
+curl -L -o "%LIBUSB_ARCHIVE%" ftp://ftp.heanet.ie/pub/download.sourceforge.net/pub/sourceforge/l/li/libusb/libusb-1.0/%LIBUSB_NAME%/%LIBUSB_ARCHIVE% || goto :error
+7z -y x "%LIBUSB_ARCHIVE%" || goto :error
 
 
 rem ----------------------------------------------------------------------
@@ -54,9 +54,9 @@ cmake "%PROJECT_DIR%" -G "NMake Makefiles" ^
     -DCMAKE_BUILD_TYPE=Release ^
     -DCMAKE_INSTALL_PREFIX="" ^
     -DLibUsb_INCLUDE_DIR="%ROOT_DIR%\include" ^
-    -DLibUsb_LIBRARY="%ROOT_DIR%\%LIBUSB_ARCH%\static\libusb-1.0.lib"
-nmake
-nmake install DESTDIR="%ROOT_DIR%"
+    -DLibUsb_LIBRARY="%ROOT_DIR%\%LIBUSB_ARCH%\static\libusb-1.0.lib" || goto :error
+nmake || goto :error
+nmake install DESTDIR="%ROOT_DIR%" || goto :error
 
 
 rem ----------------------------------------------------------------------
@@ -64,8 +64,8 @@ rem Create the JAR file
 rem ----------------------------------------------------------------------
 
 mkdir "classes\org\usb4java\%OS%-%ARCH%"
-copy "%ROOT_DIR%\lib\usb4java.dll" classes\org\usb4java\%OS%-%ARCH%\libusb4java.dll
-jar cf "%TARGET_DIR%\libusb4java-%OS%-%ARCH%.jar" -C classes org
+copy "%ROOT_DIR%\lib\usb4java.dll" classes\org\usb4java\%OS%-%ARCH%\libusb4java.dll || goto :error
+jar cf "%TARGET_DIR%\libusb4java-%OS%-%ARCH%.jar" -C classes org || goto :error
 
 
 rem ----------------------------------------------------------------------
@@ -75,3 +75,8 @@ rem ----------------------------------------------------------------------
 cd "%CURRENT%"
 rmdir /s /q "%BUILD_DIR%"
 rmdir /s /q "%ROOT_DIR%"
+goto :EOF
+
+:error
+echo Failed with error #%errorlevel%
+exit /b %errorlevel%
