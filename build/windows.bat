@@ -78,5 +78,7 @@ rmdir /s /q "%ROOT_DIR%"
 goto :EOF
 
 :error
-echo Failed with error #%errorlevel%
-exit /b %errorlevel%
+set ERRORCODE=%errorlevel%
+echo Failed with error #%ERRORCODE%
+cd "%CURRENT%"
+exit /b %ERRORCODE%
