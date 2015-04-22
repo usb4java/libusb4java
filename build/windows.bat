@@ -19,7 +19,7 @@ set LIBUSB_RC=-rc1
 set CURRENT=%cd%
 set PROJECT_DIR=%~dp0..
 set OS=windows
-if "%PLATFORM%" == "X64" (
+if /i "%Platform%" == "x64" (
     set ARCH=x86_64
     set LIBUSB_ARCH=MS64
 ) else (
