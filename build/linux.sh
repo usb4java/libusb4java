@@ -69,7 +69,7 @@ cmake "$PROJECT_DIR" \
     -DCMAKE_INSTALL_PREFIX="" \
     -DLibUsb_INCLUDE_DIRS="$ROOT_DIR/include/libusb-1.0" \
     -DLibUsb_LIBRARIES="$ROOT_DIR/lib/libusb-1.0.a;$ROOT_DIR/lib/libudev.a" \
-    -DLibUsb_LDFLAGS="-pthread"
+    -DLibUsb_LDFLAGS="-pthread -lrt"
 make install/strip DESTDIR="$ROOT_DIR"
 
 # Create the JAR file
