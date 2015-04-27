@@ -67,10 +67,9 @@ cd "$TARGET_DIR/libusb4java"
 cmake "$PROJECT_DIR" \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX="" \
-    -DLibUsb_INCLUDE_DIR="$ROOT_DIR/include" \
-    -DLibUsb_LIBRARY="$ROOT_DIR/lib/libusb-1.0.a" \
-    -DLibUdev_INCLUDE_DIR="$ROOT_DIR/include" \
-    -DLibUdev_LIBRARY="$ROOT_DIR/lib/libudev.a"
+    -DLibUsb_INCLUDE_DIRS="$ROOT_DIR/include/libusb-1.0" \
+    -DLibUsb_LIBRARIES="$ROOT_DIR/lib/libusb-1.0.a;$ROOT_DIR/lib/libudev.a" \
+    -DLibUsb_LDFLAGS="-pthread"
 make install/strip DESTDIR="$ROOT_DIR"
 
 # Create the JAR file
