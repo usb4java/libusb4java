@@ -10,7 +10,6 @@ find_package(LibUsb REQUIRED)
 include_directories(${JNI_INCLUDE_DIRS})
 include_directories(${LibUsb_INCLUDE_DIRS})
 
-add_definitions(-DSIZEOF_VOID_P=${CMAKE_SIZEOF_VOID_P})
 if(CMAKE_COMPILER_IS_GNUCC)
     add_definitions(-Wall -Werror -std=c99)
 endif()

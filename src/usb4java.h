@@ -14,11 +14,7 @@
 #define CLASS_PATH(CLASS_NAME) PACKAGE_DIR"/"CLASS_NAME
 #define METHOD_NAME(CLASS_NAME, METHOD_NAME) Java_org_usb4java_##CLASS_NAME##_##METHOD_NAME
 
-#if SIZEOF_VOID_P == 4
-# define jptr jint
-#elif SIZEOF_VOID_P == 8
-# define jptr jlong
-#endif
+#define jptr uintptr_t
 
 /**
  * Sets a pointer address in an object field.
