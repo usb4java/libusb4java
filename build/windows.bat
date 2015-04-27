@@ -53,8 +53,8 @@ cd "%BUILD_DIR%"
 cmake "%PROJECT_DIR%" -G "NMake Makefiles" ^
     -DCMAKE_BUILD_TYPE=Release ^
     -DCMAKE_INSTALL_PREFIX="" ^
-    -DLibUsb_INCLUDE_DIR="%ROOT_DIR%\include" ^
-    -DLibUsb_LIBRARY="%ROOT_DIR%\%LIBUSB_ARCH%\static\libusb-1.0.lib" || goto :error
+    -DLibUsb_INCLUDE_DIRS="%ROOT_DIR%\include\libusb-1.0" ^
+    -DLibUsb_LIBRARIES="%ROOT_DIR%\%LIBUSB_ARCH%\static\libusb-1.0.lib" || goto :error
 nmake || goto :error
 nmake install DESTDIR="%ROOT_DIR%" || goto :error
 
