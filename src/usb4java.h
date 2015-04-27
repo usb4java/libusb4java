@@ -8,7 +8,7 @@
 #define USB4JAVA_H
 
 #include <jni.h>
-#include <libusb-1.0/libusb.h>
+#include <libusb.h>
 
 #define PACKAGE_DIR "org/usb4java"
 #define CLASS_PATH(CLASS_NAME) PACKAGE_DIR"/"CLASS_NAME
