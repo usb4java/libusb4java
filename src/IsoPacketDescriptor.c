@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2013 Luca Longinotti (l@longi.li)
- * See COPYING file for copying conditions
+ * See LICENSE.md file for copying conditions
  */
 
 #include "IsoPacketDescriptor.h"

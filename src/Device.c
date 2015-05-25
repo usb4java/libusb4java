@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2013 Klaus Reimer (k@ailis.de)
- * See COPYING file for copying conditions
+ * See LICENSE.md file for copying conditions
  */
 
 #include "Device.h"

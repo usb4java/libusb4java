@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2013 Luca Longinotti (l@longi.li)
- * See COPYING file for copying conditions
+ * See LICENSE.md file for copying conditions
  */
 
 #ifndef USB4JAVA_ISO_PACKET_DESCRIPTOR_H
