@@ -12,7 +12,7 @@ set -e
 
 # Software versions
 LIBUSB_VERSION=1.0.19
-EUDEV_VERSION=3.0
+EUDEV_VERSION=3.1.2
 
 # Determine directories
 cd "$(dirname $0)/.."
