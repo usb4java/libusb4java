@@ -11,8 +11,8 @@
 set -e
 
 # Software versions
-LIBUSB_VERSION=1.0.19
-EUDEV_VERSION=3.1.2
+LIBUSB_VERSION=1.0.20
+EUDEV_VERSION=3.1.4
 
 # Determine directories
 cd "$(dirname $0)/.."
@@ -44,8 +44,9 @@ echo "Building for platform $OS-$ARCH"
 # Download and build eudev
 mkdir -p "$TARGET_DIR/eudev"
 cd "$TARGET_DIR/eudev"
-curl -L "http://dev.gentoo.org/~blueness/eudev/eudev-$EUDEV_VERSION.tar.gz" \
+curl -L "https://github.com/gentoo/eudev/archive/v$EUDEV_VERSION.tar.gz" \
     | tar xvz --strip-components=1
+./autogen.sh
 ./configure --disable-shared --enable-static --with-pic --prefix="" \
     --enable-split-usr --disable-manpages --disable-kmod \
     --disable-gudev --disable-selinux --disable-blkid

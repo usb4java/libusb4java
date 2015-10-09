@@ -15,7 +15,7 @@ rem ----------------------------------------------------------------------
 rem Setup variables
 rem ----------------------------------------------------------------------
 
-set LIBUSB_VERSION=1.0.19
+set LIBUSB_VERSION=1.0.20
 set CURRENT=%cd%
 set PROJECT_DIR=%~dp0..
 set OS=windows
@@ -96,4 +96,3 @@ exit /b %ERRORCODE%
 
 :end
 echo Finished
-

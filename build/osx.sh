@@ -17,7 +17,7 @@ fi
 set -e
 
 # Software versions
-LIBUSB_VERSION=1.0.19
+LIBUSB_VERSION=1.0.20
 
 # Determine directories
 cd "$(dirname $0)/.."
@@ -37,7 +37,7 @@ case "$ARCH" in
         ;;
     *)
         OSX_ARCH="$ARCH"
-esac    
+esac
 echo "Building for platform $OS-$ARCH"
 
 # Download and build libusb
