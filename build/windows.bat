@@ -49,7 +49,7 @@ curl -L -o "%LIBUSB_COMPRESSED_ARCHIVE%" http://downloads.sourceforge.net/projec
 cd "%LIBUSB_NAME%"
 mkdir build
 cd build
-cl /nologo /c /MT /I..\libusb /I..\msvc ..\libusb\*.c ..\libusb\os\windows*.c ..\libusb\os\*windows.c
+cl /DHAVE_STRUCT_TIMESPEC /nologo /c /MT /I..\libusb /I..\msvc ..\libusb\*.c ..\libusb\os\windows*.c ..\libusb\os\*windows.c
 lib /nologo /out:libusb.lib *.obj
 
 
