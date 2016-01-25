@@ -1,3 +1,4 @@
+#!/bin/bash
 # ============================================================================
 # Build script for Linux.
 #
@@ -22,6 +23,10 @@ BUILD_DIR="$TARGET_DIR/build"
 DOWNLOAD_DIR="$TARGET_DIR/downloads"
 ROOT_DIR="$BUILD_DIR/root"
 
+# Standard compiler and linker flags
+CFLAGS="-I$ROOT_DIR/include"
+LDFLAGS="-L$ROOT_DIR/lib"
+
 # Clean up build directory
 rm -rf "$BUILD_DIR"
 
@@ -39,12 +44,17 @@ case "$(arch)" in
         ;;
     "armv"*)
         ARCH=arm
+        # Set compiler flags for Raspberry Pi 1 compatibility
+        CFLAGS="$CFLAGS -marm -march=armv6zk -mcpu=arm1176jzf-s -mfloat-abi=hard -mfpu=vfp"
         ;;
     *)
         echo "Unknown platform: $(arch)"
         exit 1
 esac
 echo "Building for platform $OS-$ARCH"
+
+# Export compiler and linker flags
+export CFLAGS LDFLAGS
 
 # Download, unpack and compile eudev
 EUDEV_TARBALL="eudev-$EUDEV_VERSION.tar.gz"
@@ -60,7 +70,7 @@ cd "$BUILD_DIR/eudev"
 tar xvf "$EUDEV_TARGET" --strip-components=1
 ./configure --disable-shared --enable-static --with-pic --prefix="" \
     --enable-split-usr --disable-manpages --disable-kmod \
-    --disable-gudev --disable-selinux --disable-blkid
+    --disable-selinux --disable-blkid
 make install-strip DESTDIR="$ROOT_DIR"
 
 # Download and build libusb
@@ -75,8 +85,6 @@ fi
 mkdir -p "$BUILD_DIR/libusb"
 cd "$BUILD_DIR/libusb"
 tar xvf "$LIBUSB_TARGET" --strip-components=1
-CFLAGS="-I$ROOT_DIR/include" \
-LDFLAGS="-L$ROOT_DIR/lib" \
 ./configure --disable-shared --enable-static --with-pic --prefix=""
 make install-strip DESTDIR="$ROOT_DIR"
 
