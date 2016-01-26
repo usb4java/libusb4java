@@ -1,3 +1,4 @@
+#1/bin/bash
 # ============================================================================
 # Build script for Mac OS X.
 #
@@ -23,10 +24,15 @@ LIBUSB_VERSION=1.0.20
 cd "$(dirname $0)/.."
 PROJECT_DIR="$(pwd)"
 TARGET_DIR="$PROJECT_DIR/target"
-ROOT_DIR="$TARGET_DIR/root"
+BUILD_DIR="$TARGET_DIR/build"
+DOWNLOAD_DIR="$TARGET_DIR/downloads"
+ROOT_DIR="$BUILD_DIR/root"
 
 # Clean up target directory
-rm -rf "$TARGET_DIR"
+rm -rf "$BUILD_DIR"
+
+# Create download directory if not already present
+mkdir -p "$DOWNLOAD_DIR"
 
 # Determine OS and architecture
 OS=osx
@@ -40,19 +46,31 @@ case "$ARCH" in
 esac
 echo "Building for platform $OS-$ARCH"
 
+# Standard compiler and linker flags
+CFLAGS="-I$ROOT_DIR/include -arch $OSX_ARCH"
+LDFLAGS="-L$ROOT_DIR/lib"
+
+# Export compiler and linker flags
+export CFLAGS LDFLAGS
+
 # Download and build libusb
-mkdir -p "$TARGET_DIR/libusb"
-cd "$TARGET_DIR/libusb"
-curl -L "http://downloads.sf.net/project/libusb/libusb-1.0/libusb-$LIBUSB_VERSION/libusb-$LIBUSB_VERSION.tar.bz2" \
-    | tar xvj --strip-components=1
-CFLAGS="-I$ROOT_DIR/include -arch $OSX_ARCH" \
-LDFLAGS="-L$ROOT_DIR/lib" \
+LIBUSB_TARBALL="libusb-$LIBUSB_VERSION.tar.bz2"
+LIBUSB_SOURCE="http://downloads.sf.net/project/libusb/libusb-1.0/libusb-$LIBUSB_VERSION/$LIBUSB_TARBALL"
+LIBUSB_TARGET="$DOWNLOAD_DIR/$LIBUSB_TARBALL"
+if [ ! -f "$LIBUSB_TARGET" ]
+then
+    curl -C - -o "$LIBUSB_TARGET.download" -L "$LIBUSB_SOURCE"
+    mv -f "$LIBUSB_TARGET.download" "$LIBUSB_TARGET"
+fi
+mkdir -p "$BUILD_DIR/libusb"
+cd "$BUILD_DIR/libusb"
+tar xvf "$LIBUSB_TARGET" --strip-components=1
 ./configure --disable-shared --enable-static --with-pic --prefix="$ROOT_DIR"
 make install-strip
 
 # Build libusb4java
-mkdir -p "$TARGET_DIR/libusb4java"
-cd "$TARGET_DIR/libusb4java"
+mkdir -p "$BUILD_DIR/libusb4java"
+cd "$BUILD_DIR/libusb4java"
 PKG_CONFIG_PATH="$ROOT_DIR/lib/pkgconfig" cmake "$PROJECT_DIR" \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX="" \
@@ -61,7 +79,6 @@ PKG_CONFIG_PATH="$ROOT_DIR/lib/pkgconfig" cmake "$PROJECT_DIR" \
 make install/strip DESTDIR="$ROOT_DIR"
 
 # Create the JAR file
-OS=osx
-mkdir -p "$TARGET_DIR/classes/org/usb4java/$OS-$ARCH"
-cp "$ROOT_DIR/lib/libusb4java.dylib" "$TARGET_DIR/classes/org/usb4java/$OS-$ARCH"
-jar cf "$TARGET_DIR/libusb4java-$OS-$ARCH.jar" -C "$TARGET_DIR/classes" org
+mkdir -p "$BUILD_DIR/classes/org/usb4java/$OS-$ARCH"
+cp "$ROOT_DIR/lib/libusb4java.dylib" "$BUILD_DIR/classes/org/usb4java/$OS-$ARCH"
+jar cf "$BUILD_DIR/libusb4java-$OS-$ARCH.jar" -C "$BUILD_DIR/classes" org
