@@ -5,7 +5,7 @@
 # The script automatically compiles the binary for the local architecture and
 # creates the corresponding JAR file in the target folder.
 #
-# Requirements: cmake, make, curl, jar
+# Requirements: cmake, make, curl, jar.
 # ============================================================================
 
 # Fail on all errors
