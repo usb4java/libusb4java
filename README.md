@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/anilgit90/libusb4java.svg?branch=master)](https://travis-ci.org/anilgit90/libusb4java)
+
 This is the source code of the JNI wrapper for libusb. usb4java
 already includes pre-compiled libraries for the following platforms:
 

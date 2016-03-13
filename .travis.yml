@@ -1,0 +1,22 @@
+# Require trusty for now as it has a more recent version of autoconf
+sudo: required
+dist: trusty
+language: c
+
+compiler:
+    - gcc
+
+os:
+    - linux
+
+
+addons:
+    apt:
+        packages:
+            - libusb-1.0-0-dev
+            - cmake
+            - default-jdk
+
+script:
+    - cmake . && make -j4
+
