@@ -9,7 +9,6 @@ compiler:
 os:
     - linux
 
-
 addons:
     apt:
         packages:
@@ -18,5 +17,5 @@ addons:
             - default-jdk
 
 script:
-    - cmake . && make -j4
+    - ./travis-autogen.sh && make -j4
 
