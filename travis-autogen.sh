@@ -1,6 +1,8 @@
 #!/bin/sh
 
 # Passes on warning
-CFLAGS+=" -Wno-error"
+CFLAGS="-Wno-error"
+
+set -e
 
 cmake .
