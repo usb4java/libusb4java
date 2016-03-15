@@ -17,5 +17,5 @@ addons:
             - default-jdk
 
 script:
-    - ./travis-autogen.sh && make -j4
+    - ./travis-autogen.sh --disable-udev && make -j4
 
