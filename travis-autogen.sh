@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Passes on warning
-CFLAGS="-Wno-error"
+CFLAGS="-w"
 
 set -e
 
