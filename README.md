@@ -6,7 +6,7 @@ already includes pre-compiled libraries for the following platforms:
 * linux-arm
 * windows-x86
 * windows-x86_64
-* macos (64 bit only)
+* macos-x86_64
 
 If you need the library on an other platform then you can easily compile it
 yourself.  On a Unix-compatible operating system you only need the Java JDK,

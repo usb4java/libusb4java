@@ -29,12 +29,12 @@ rm -rf "$BUILD_DIR"
 mkdir -p "$DOWNLOAD_DIR"
 
 # Determine OS and architecture
-OS=osx
-OSX_ARCH=x86_64
+OS=macos
+ARCH=x86_64
 echo "Building for platform $OS-$ARCH"
 
 # Standard compiler and linker flags
-CFLAGS="-I$ROOT_DIR/include -arch $OSX_ARCH"
+CFLAGS="-I$ROOT_DIR/include -arch $ARCH"
 LDFLAGS="-L$ROOT_DIR/lib"
 
 # Export compiler and linker flags
@@ -61,7 +61,7 @@ cd "$BUILD_DIR/libusb4java"
 PKG_CONFIG_PATH="$ROOT_DIR/lib/pkgconfig" cmake "$PROJECT_DIR" \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX="" \
-    -DCMAKE_OSX_ARCHITECTURES=$OSX_ARCH \
+    -DCMAKE_OSX_ARCHITECTURES=$ARCH \
     -DLibUsb_USE_STATIC_LIBS=true
 make install/strip DESTDIR="$ROOT_DIR"
 
