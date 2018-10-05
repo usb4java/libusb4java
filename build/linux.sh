@@ -12,8 +12,8 @@
 set -e
 
 # Software versions
-LIBUSB_VERSION=1.0.20
-EUDEV_VERSION=3.1.5
+LIBUSB_VERSION=1.0.22
+EUDEV_VERSION=3.2.6
 
 # Determine directories
 cd "$(dirname $0)/.."

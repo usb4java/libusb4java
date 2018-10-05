@@ -2,7 +2,7 @@
 # ============================================================================
 # Build script for Mac OS X.
 #
-# The script automatically compiles the multi-binary for x86 and x86_64 and
+# The script automatically compiles the binary x86_64 and
 # creates the corresponding JAR file in the target folder.
 #
 # Requirements: cmake, make, curl, jar
@@ -18,7 +18,7 @@ fi
 set -e
 
 # Software versions
-LIBUSB_VERSION=1.0.20
+LIBUSB_VERSION=1.0.22
 
 # Determine directories
 cd "$(dirname $0)/.."
@@ -36,14 +36,7 @@ mkdir -p "$DOWNLOAD_DIR"
 
 # Determine OS and architecture
 OS=osx
-ARCH="$1"
-case "$ARCH" in
-    x86)
-        OSX_ARCH=i386
-        ;;
-    *)
-        OSX_ARCH="$ARCH"
-esac
+OSX_ARCH=x86_64
 echo "Building for platform $OS-$ARCH"
 
 # Standard compiler and linker flags

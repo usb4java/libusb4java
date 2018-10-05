@@ -130,7 +130,7 @@ JNIEXPORT void JNICALL METHOD_NAME(LibUsb, setDebug)
 {
     libusb_context *ctx = unwrapContext(env, context);
     if (!ctx && context) return;
-    libusb_set_debug(ctx, level);
+    libusb_set_option(ctx, LIBUSB_OPTION_LOG_LEVEL, level);
 }
 
 /**
