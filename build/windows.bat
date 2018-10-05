@@ -8,7 +8,7 @@ rem the corresponding platform and creates the JAR file in the target
 rem folder.
 rem
 rem Dependencies: cmake, curl, jar  and 7z must be callable via PATH.
-rem Visual Studio 2013 Community must be installed.
+rem Visual Studio 2017 Build Tools must be installed.
 rem ======================================================================
 
 rem ----------------------------------------------------------------------
