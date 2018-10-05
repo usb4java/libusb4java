@@ -8,12 +8,6 @@
 # Requirements: cmake, make, curl, jar
 # ============================================================================
 
-if [ $# -ne 1 ]
-then
-    echo "Syntax: $0 <ARCH>"
-    exit 1
-fi
-
 # Fail on all errors
 set -e
 
