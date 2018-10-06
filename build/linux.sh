@@ -42,8 +42,11 @@ case "$(arch)" in
     "i"[3456]"86")
         ARCH=x86
         ;;
+    "aarch64")
+    	ARCH=arm64
+    	;;[A
     "armv"*)
-        ARCH=arm
+        ARCH=armhf
         # Set compiler flags for Raspberry Pi 1 compatibility
         CFLAGS="$CFLAGS -marm -march=armv6zk -mcpu=arm1176jzf-s -mfloat-abi=hard -mfpu=vfp"
         ;;
