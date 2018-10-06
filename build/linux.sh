@@ -44,7 +44,7 @@ case "$(arch)" in
         ;;
     "aarch64")
     	ARCH=arm64
-    	;;[A
+    	;;
     "armv"*)
         ARCH=armhf
         # Set compiler flags for Raspberry Pi 1 compatibility
