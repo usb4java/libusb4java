@@ -37,6 +37,23 @@
 static int defaultContextRefcnt = 0;
 
 /**
+ * Validates the default context by making sure the reference counter is larger than 0.
+ *
+ * @param ENV
+ *            The Java environment.
+ * @param CONTEXT
+ *            The context. This check does nothing if a context is set.
+ * @param ACTION
+ *            The action to perform after throwing an exception.
+ */
+#define VALIDATE_DEFAULT_CONTEXT(ENV, CONTEXT, ACTION) \
+    if (!CONTEXT && !defaultContextRefcnt) \
+    { \
+        illegalState(ENV, "Default context is not initialized"); \
+        ACTION; \
+    }
+
+/**
  * Version getVersion()
  */
 JNIEXPORT jobject JNICALL METHOD_NAME(LibUsb, getVersion)
@@ -158,6 +175,7 @@ JNIEXPORT jint JNICALL METHOD_NAME(LibUsb, getDeviceList)
     libusb_device **list;
     ssize_t result;
 
+    VALIDATE_DEFAULT_CONTEXT(env, context, return 0);
     VALIDATE_NOT_NULL(env, deviceList, return 0);
     VALIDATE_POINTER_NOT_SET(env, deviceList, "deviceListPointer", return 0);
     ctx = unwrapContext(env, context);
