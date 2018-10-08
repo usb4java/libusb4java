@@ -611,6 +611,48 @@ JNIEXPORT jint JNICALL METHOD_NAME(LibUsb, freeStreams)
 }
 
 /**
+ * ByteBuffer devMemAlloc(DeviceHandle, int)
+ */
+JNIEXPORT jobject JNICALL METHOD_NAME(LibUsb, devMemAlloc)
+(
+    JNIEnv *env, jclass class, jobject handle, jint length
+)
+{
+    libusb_device_handle *dev_handle;
+
+    VALIDATE_NOT_NULL(env, handle, return 0);
+
+    dev_handle = unwrapDeviceHandle(env, handle);
+    if (!dev_handle) return 0;
+
+    unsigned char *mem = libusb_dev_mem_alloc(dev_handle, length);
+    if (!mem) return NULL;
+
+    jobject buffer = (*env)->NewDirectByteBuffer(env, mem, length);
+    return buffer;
+}
+
+/**
+ * int devMemFree(DeviceHandle, ByteBuffer, int)
+ */
+JNIEXPORT int JNICALL METHOD_NAME(LibUsb, devMemFree)
+(
+    JNIEnv *env, jclass class, jobject handle, jobject buffer, jint length
+)
+{
+    libusb_device_handle *dev_handle;
+
+    VALIDATE_NOT_NULL(env, handle, return 0);
+    VALIDATE_NOT_NULL(env, buffer, return 0);
+
+    dev_handle = unwrapDeviceHandle(env, handle);
+    if (!dev_handle) return 0;
+
+    unsigned char *mem = (*env)->GetDirectBufferAddress(env, buffer);
+    return libusb_dev_mem_free(dev_handle, mem, length);
+}
+
+/**
  * int kernelDriverActive(DeviceHandle, int)
  */
 JNIEXPORT jint JNICALL METHOD_NAME(LibUsb, kernelDriverActive)
