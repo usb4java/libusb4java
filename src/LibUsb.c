@@ -134,6 +134,19 @@ JNIEXPORT void JNICALL METHOD_NAME(LibUsb, setDebug)
 }
 
 /**
+ * void setOption(Context, int, int)
+ */
+JNIEXPORT void JNICALL METHOD_NAME(LibUsb, setOption)
+(
+    JNIEnv *env, jclass class, jobject context, jint option, jint value
+)
+{
+    libusb_context *ctx = unwrapContext(env, context);
+    if (!ctx && context) return;
+    libusb_set_option(ctx, option, value);
+}
+
+/**
  * int getDeviceList(Context, DeviceList)
  */
 JNIEXPORT jint JNICALL METHOD_NAME(LibUsb, getDeviceList)
