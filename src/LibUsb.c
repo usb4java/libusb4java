@@ -1366,6 +1366,19 @@ JNIEXPORT jint JNICALL METHOD_NAME(LibUsb, eventHandlerActive)
 }
 
 /**
+ * void interruptEventHandler(Context)
+ */
+JNIEXPORT void JNICALL METHOD_NAME(LibUsb, interruptEventHandler)
+(
+    JNIEnv *env, jclass class, jobject context
+)
+{
+    libusb_context *ctx = unwrapContext(env, context);
+    if (!ctx && context) return;
+    libusb_interrupt_event_handler(ctx);
+}
+
+/**
  * void lockEventWaiters(Context)
  */
 JNIEXPORT void JNICALL METHOD_NAME(LibUsb, lockEventWaiters)
