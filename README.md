@@ -18,7 +18,7 @@ library with the following commands:
     $ cd build
     $ cmake ..
     $ make
-  
+
 When compilation was successful then you can find the library in the
 `build/src` directory.
 

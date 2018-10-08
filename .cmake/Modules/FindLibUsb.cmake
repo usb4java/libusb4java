@@ -3,8 +3,8 @@
 #   LibUsb_LIBRARIES         : The libraries to link against
 #   LibUsb_INCLUDE_DIRS      : The directories to include
 #
-# pkg-config is used when available and CMAKE_SHARED_LINKER_FLAGS 
-# is filled with additianal flags reported by it.
+# pkg-config is used when available and CMAKE_SHARED_LINKER_FLAGS
+# is filled with additional flags reported by it.
 #
 # When no pkg-config is found then the library is searched within the
 # standard directories.
