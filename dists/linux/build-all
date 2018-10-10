@@ -7,6 +7,9 @@
 # Exit on errors
 set -e
 
+# Go to base directory of linux build scripts
+cd $(dirname $0)
+
 # Build X86 library
 ./build x86
 
