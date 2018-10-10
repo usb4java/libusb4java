@@ -1,12 +1,13 @@
 This is the source code of the JNI wrapper for libusb. usb4java
-already includes pre-compiled libraries for the following platforms:
+already includes prebuilt libraries for the following platforms:
 
 * linux-x86
-* linux-x86_64
+* linux-x86-64
 * linux-arm
-* windows-x86
-* windows-x86_64
-* macos-x86_64
+* linux-aarch64
+* win32-x86
+* win32-x86-64
+* darwin-x86-64
 
 If you need the library on an other platform then you can easily compile it
 yourself.  On a Unix-compatible operating system you only need the Java JDK,

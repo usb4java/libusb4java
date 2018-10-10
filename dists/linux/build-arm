@@ -1,0 +1,50 @@
+#!/bin/bash
+#
+# Copyright (C) 2018 Klaus Reimer <k@ailis.de>
+# See LICENSE.md for licensing information.
+#
+
+# Exit on errors
+set -e
+
+# Go to base directory
+cd $(dirname $0)/../..
+
+# Create some helper variables
+TARGET=target
+BUILD=$TARGET/build/arm-rpt
+
+# Create build directory
+mkdir -p $BUILD
+
+# Build docker image
+docker build . \
+    --network host \
+    -f dists/linux/Dockerfile.arm \
+    -t usb4java-build-arm-rpt
+
+# Compile libusb4java in docker image
+docker run \
+    -u $(id -u $USER):$(id -g $USER) \
+    --network host \
+    --rm \
+    -v $(pwd):/workspace \
+    -it usb4java-build-arm-rpt \
+    /bin/bash -c "
+        cd /workspace/$BUILD;
+        export PATH=/opt/tools/arm-bcm2708/arm-linux-gnueabihf/bin:$PATH;
+        JAVA_HOME=/usr/lib/jvm/java-gcj-6 cmake ../../.. \
+            -DCMAKE_SYSTEM_NAME=Linux \
+            -DCMAKE_SYSTEM_PROCESSOR=arm \
+            -DCMAKE_C_COMPILER=arm-linux-gnueabihf-gcc \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_INSTALL_PREFIX='' \
+            -DLibUsb_LIBRARIES='/usr/local/lib/libusb-1.0.a;/usr/local/lib/libudev.a' \
+            -DLibUsb_LDFLAGS='-pthread -lrt';
+        make install/strip DESTDIR=/workspace/$BUILD
+    "
+
+# Create the JAR file
+mkdir -p "$BUILD/classes/org/usb4java/linux-arm"
+cp "$BUILD/lib/libusb4java.so" "$BUILD/classes/org/usb4java/linux-arm"
+jar cf "$TARGET/libusb4java-linux-arm.jar" -C "$BUILD/classes" org
