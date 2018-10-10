@@ -29,7 +29,7 @@ docker run \
     --network host \
     --rm \
     -v $(pwd):/workspace \
-    -it usb4java-build-arm-rpt \
+    usb4java-build-arm-rpt \
     /bin/bash -c "
         cd /workspace/$BUILD;
         export PATH=/opt/tools/arm-bcm2708/arm-linux-gnueabihf/bin:$PATH;
