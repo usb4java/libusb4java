@@ -28,7 +28,7 @@ if /i "%Platform%" == "x64" (
 )
 set TARGET_DIR=%PROJECT_DIR%\target
 set BUILD_DIR=%TARGET_DIR%\build\%OS%-%ARCH%
-set ROOT_DIR=%TARGET_DIR%\root
+set ROOT_DIR=%BUILD_DIR%\root
 
 
 rem
@@ -84,9 +84,7 @@ rem Clean up and go back to original directory
 rem ----------------------------------------------------------------------
 
 cd "%CURRENT%"
-rmdir /s /q "%BUILD_DIR%"
-rmdir /s /q "%ROOT_DIR%"
-goto :EOF
+goto :end
 
 :error
 set ERRORCODE=%errorlevel%
