@@ -2,7 +2,7 @@
 # ============================================================================
 # Build script for Mac OS X.
 #
-# The script automatically compiles the binary x86_64 and
+# The script automatically compiles the binary x86-64 and
 # creates the corresponding JAR file in the target folder.
 #
 # Requirements: cmake, make, curl, jar
@@ -15,11 +15,11 @@ set -e
 LIBUSB_VERSION=1.0.22
 
 # Determine directories
-cd "$(dirname $0)/.."
+cd "$(dirname $0)/../.."
 PROJECT_DIR="$(pwd)"
 TARGET_DIR="$PROJECT_DIR/target"
-BUILD_DIR="$TARGET_DIR/build"
-DOWNLOAD_DIR="$TARGET_DIR/downloads"
+BUILD_DIR="$TARGET_DIR/build/darwin-x86-64"
+DOWNLOAD_DIR="$BUILD_DIR/downloads"
 ROOT_DIR="$BUILD_DIR/root"
 
 # Clean up target directory
@@ -29,12 +29,12 @@ rm -rf "$BUILD_DIR"
 mkdir -p "$DOWNLOAD_DIR"
 
 # Determine OS and architecture
-OS=macos
-ARCH=x86_64
+OS=darwin
+ARCH=x86-64
 echo "Building for platform $OS-$ARCH"
 
 # Standard compiler and linker flags
-CFLAGS="-I$ROOT_DIR/include -arch $ARCH"
+CFLAGS="-I$ROOT_DIR/include -arch x86_64"
 LDFLAGS="-L$ROOT_DIR/lib"
 
 # Export compiler and linker flags
@@ -61,11 +61,11 @@ cd "$BUILD_DIR/libusb4java"
 PKG_CONFIG_PATH="$ROOT_DIR/lib/pkgconfig" cmake "$PROJECT_DIR" \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX="" \
-    -DCMAKE_OSX_ARCHITECTURES=$ARCH \
+    -DCMAKE_OSX_ARCHITECTURES=x86_64 \
     -DLibUsb_USE_STATIC_LIBS=true
 make install/strip DESTDIR="$ROOT_DIR"
 
 # Create the JAR file
 mkdir -p "$BUILD_DIR/classes/org/usb4java/$OS-$ARCH"
 cp "$ROOT_DIR/lib/libusb4java.dylib" "$BUILD_DIR/classes/org/usb4java/$OS-$ARCH"
-jar cf "$BUILD_DIR/libusb4java-$OS-$ARCH.jar" -C "$BUILD_DIR/classes" org
+jar cf "$TARGET_DIR/libusb4java-$OS-$ARCH.jar" -C "$BUILD_DIR/classes" org
