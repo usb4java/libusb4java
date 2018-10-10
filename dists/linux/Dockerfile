@@ -8,20 +8,20 @@ FROM $DEBARCH/debian:stretch
 
 # Copy optional qemu binaries
 ARG ARCH
-COPY target/build/$ARCH/qemu* /usr/bin/
+COPY target/build/linux-$ARCH/qemu* /usr/bin/
 
 # Install debian updates
 RUN apt-get update && apt-get upgrade -y
 
 # Workaround for armhf architecture: This package can't be installed later as a
-# dependency of gcj-6-jdk (Corrupt tarball error messages) but for some reason 
+# dependency of gcj-6-jdk (Corrupt tarball error messages) but for some reason
 # it works when it is installed beforehand
 RUN apt-get install -y gnome-icon-theme
 
 # Install required debian packages
 RUN apt-get install -y gcc cmake curl gperf bzip2 gcj-6-jdk
 
-# Install eudev    
+# Install eudev
 RUN mkdir -p /tmp/eudev; \
     cd /tmp/eudev; \
     curl -L http://dev.gentoo.org/~blueness/eudev/eudev-3.2.6.tar.gz | tar xvz --strip-components 1; \
@@ -37,7 +37,7 @@ RUN mkdir -p /tmp/eudev; \
         --prefix=/usr/local; \
     make install-strip; \
     rm -rf /tmp/eudev
-    
+
 # Install libusb
 RUN mkdir -p /tmp/libusb; \
     cd /tmp/libusb; \

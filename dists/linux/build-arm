@@ -12,7 +12,7 @@ cd $(dirname $0)/../..
 
 # Create some helper variables
 TARGET=target
-BUILD=$TARGET/build/arm-rpt
+BUILD=$TARGET/build/linux-arm-rpt
 
 # Create build directory
 mkdir -p $BUILD
