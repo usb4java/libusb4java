@@ -33,6 +33,7 @@
 #include "ContainerIdDescriptor.h"
 #include "Transfer.h"
 #include "HotplugCallbackHandle.h"
+#include "Pollfds.h"
 
 static int defaultContextRefcnt = 0;
 
@@ -1650,6 +1651,46 @@ JNIEXPORT void JNICALL METHOD_NAME(LibUsb, unsetPollfdNotifiersNative)
     libusb_context *ctx = unwrapContext(env, context);
     if (!ctx && context) return;
     libusb_set_pollfd_notifiers(ctx, NULL, NULL, NULL);
+}
+
+/**
+ * Pollfds getPollfds(Context)
+ */
+JNIEXPORT jobject JNICALL METHOD_NAME(LibUsb, getPollfds)
+(
+    JNIEnv *env, jclass class, jobject context
+)
+{
+    libusb_context *ctx;
+    const struct libusb_pollfd **list;
+    jobject pollfds;
+    jint size;
+
+    VALIDATE_DEFAULT_CONTEXT(env, context, return NULL);
+    ctx = unwrapContext(env, context);
+    if (!ctx && context) return NULL;
+    list = libusb_get_pollfds(ctx);
+    if (!list) return NULL;
+    for (size = 0; list[size]; size++) {};
+    pollfds = wrapPollfds(env, list, size);
+    return pollfds;
+}
+
+/**
+ * void freePollfds(Pollfds)
+ */
+JNIEXPORT void JNICALL METHOD_NAME(LibUsb, freePollfds)
+(
+    JNIEnv *env, jclass class, jobject pollfds
+)
+{
+    const struct libusb_pollfd **list;
+
+    if (!pollfds) return;
+    list = unwrapPollfds(env, pollfds);
+    if (!list) return;
+    libusb_free_pollfds(list);
+    resetPollfds(env, pollfds);
 }
 
 /**
