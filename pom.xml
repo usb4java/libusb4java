@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>org.usb4java</groupId>
+  <artifactId>libusb4java</artifactId>
+  <packaging>pom</packaging>
+  <name>libusb4java</name>
+  <version>1.3.0</version>
+  <url>https://github.com/usb4java/libusb4java/</url>
+  <description>The native JNI library used by usb4java</description>
+  <inceptionYear>2011</inceptionYear>
+  <organization>
+    <name>usb4java Team</name>
+    <url>http://usb4java.org/</url>
+  </organization>
+
+  <licenses>
+    <license>
+      <name>MIT</name>
+      <url>LICENSE.md</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <mailingLists>
+    <mailingList>
+      <name>Discussions</name>
+      <subscribe>usb4java+subscribe@googlegroups.com</subscribe>
+      <unsubscribe>usb4java+unsubscribe@googlegroups.com</unsubscribe>
+      <post>usb4java@googlegroups.com</post>
+      <archive>http://groups.google.com/group/usb4java</archive>
+    </mailingList>
+  </mailingLists>
+
+  <developers>
+    <developer>
+      <id>kayahr</id>
+      <name>Klaus Reimer</name>
+      <email>k@ailis.de</email>
+      <roles>
+        <role>Developer</role>
+      </roles>
+      <timezone>+1</timezone>
+      <url>http://www.ailis.de/~k/</url>
+    </developer>
+    <developer>
+      <id>llongi</id>
+      <name>Luca Longinotti</name>
+      <email>l@longi.li</email>
+      <roles>
+        <role>Developer</role>
+      </roles>
+      <timezone>+1</timezone>
+      <url>http://l.longi.li/</url>
+    </developer>
+  </developers>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <nativeVersion>${project.version}</nativeVersion>
+  </properties>
+
+  <scm>
+    <connection>scm:git:git://github.com/usb4java/${project.artifactId}.git</connection>
+    <developerConnection>scm:git:ssh://git@github.com/usb4java/${project.artifactId}.git</developerConnection>
+    <url>http://github.com/usb4java/${project.artifactId}</url>
+    <tag>HEAD</tag>
+  </scm>
+
+  <issueManagement>
+    <system>GitHub</system>
+    <url>https://github.com/usb4java/${project.artifactId}/issues</url>
+  </issueManagement>
+
+  <prerequisites>
+    <maven>3.0.5</maven>
+  </prerequisites>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>2.22.0</version>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-clean-plugin</artifactId>
+        <version>3.1.0</version>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-deploy-plugin</artifactId>
+        <version>3.0.0-M1</version>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-install-plugin</artifactId>
+        <version>3.0.0-M1</version>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>3.1.0</version>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-resources-plugin</artifactId>
+        <version>3.1.0</version>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-site-plugin</artifactId>
+        <version>3.7.1</version>
+      </plugin>
+    </plugins>
+  </build>
+
+  <repositories>
+    <repository>
+      <id>sonatype-snapshots</id>
+      <name>Sonatype Snapshot Repository</name>
+      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+      <snapshots><enabled>true</enabled></snapshots>
+    </repository>
+  </repositories>
+
+  <distributionManagement>
+    <snapshotRepository>
+      <id>sonatype-snapshots</id>
+      <name>Sonatype Snapshot Repository</name>
+      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+    </snapshotRepository>
+  </distributionManagement>
+
+</project>

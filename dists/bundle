@@ -1,0 +1,51 @@
+#!/bin/sh
+#
+# Copyright (C) 2018 Klaus Reimer <k@ailis.de>
+# See LICENSE.md for licensing information.
+#
+
+# Exit on errors
+set -e
+
+# Go to project root directory
+cd "$(dirname $0)/.."
+
+# Get version from pom.xml
+VERSION=$(sed -nE '0,/<version>/s/.*<version>(.*?)<\/version>.*/\1/p' pom.xml)
+
+# Determine SNAPSHOT version
+SNAPSHOT_VERSION=$(echo $VERSION | sed s/-SNAPSHOT//)-SNAPSHOT
+
+# Prepare bundle directory
+rm -rf target/bundle/
+mkdir -p target/bundle
+
+# Download latest snapshot platform JARs
+PLATFORMS="
+    linux-x86-64
+    linux-x86
+    linux-arm
+    linux-aarch64
+    win32-x86
+    win32-x86-64
+    darwin-x86-64
+"
+for PLATFORM in $PLATFORMS
+do
+    mvn dependency:copy -Dartifact=org.usb4java:libusb4java:$SNAPSHOT_VERSION:jar:$PLATFORM \
+        -DoutputDirectory=target/bundle/ -Dmdep.stripVersion=true
+    mv target/bundle/libusb4java-$PLATFORM.jar target/bundle/libusb4java-$VERSION-$PLATFORM.jar
+done
+
+# Copy pom to bundle directory
+cp pom.xml target/bundle/libusb4java-$VERSION.pom
+
+# Sign all files
+for FILE in target/bundle/*
+do
+    gpg -a --detach-sig $FILE
+done
+
+# Create bundle JAR file
+cd target/bundle
+jar cf ../libusb4java-$VERSION-bundle.jar *
