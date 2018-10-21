@@ -6,7 +6,7 @@
   <artifactId>libusb4java</artifactId>
   <packaging>pom</packaging>
   <name>libusb4java</name>
-  <version>1.3.0-SNAPSHOT</version>
+  <version>1.3.0</version>
   <url>https://github.com/usb4java/libusb4java/</url>
   <description>The native JNI library used by usb4java</description>
   <inceptionYear>2011</inceptionYear>
