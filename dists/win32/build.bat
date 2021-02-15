@@ -15,7 +15,8 @@ rem ----------------------------------------------------------------------
 rem Setup variables
 rem ----------------------------------------------------------------------
 
-set LIBUSB_VERSION=1.0.23
+set LIBUSB_VERSION=1.0.24
+
 set CURRENT=%cd%
 set PROJECT_DIR=%~dp0..\..
 set OS=win32
@@ -40,11 +41,10 @@ rem
 
 set LIBUSB_NAME=libusb-%LIBUSB_VERSION%
 set LIBUSB_COMPRESSED_ARCHIVE=%LIBUSB_NAME%.tar.bz2
-set LIBUSB_ARCHIVE=%LIBUSB_NAME%.tar
+set LIBUSB_ARCHIVE=v%LIBUSB_VERSION%.zip
 mkdir "%ROOT_DIR%"
 cd "%ROOT_DIR%
-curl -L -o "%LIBUSB_COMPRESSED_ARCHIVE%" https://github.com/libusb/libusb/releases/download/v%LIBUSB_VERSION%/%LIBUSB_COMPRESSED_ARCHIVE% || goto :error
-7z -y x "%LIBUSB_COMPRESSED_ARCHIVE%" || goto :error
+curl -L -o "%LIBUSB_ARCHIVE%" https://github.com/libusb/libusb/archive/%LIBUSB_ARCHIVE% || goto :error
 7z -y x "%LIBUSB_ARCHIVE%" || goto :error
 cd "%LIBUSB_NAME%"
 mkdir build
