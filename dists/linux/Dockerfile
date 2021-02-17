@@ -6,6 +6,8 @@
 ARG DEBARCH
 FROM $DEBARCH/debian:stretch
 
+ENV LIBUSB_VERSION=1.0.24
+
 # Copy optional qemu binaries
 ARG ARCH
 COPY target/build/linux-$ARCH/qemu* /usr/bin/
@@ -41,7 +43,7 @@ RUN mkdir -p /tmp/eudev; \
 # Install libusb
 RUN mkdir -p /tmp/libusb; \
     cd /tmp/libusb; \
-    curl -L http://downloads.sf.net/project/libusb/libusb-1.0/libusb-1.0.22/libusb-1.0.22.tar.bz2 | tar xvj --strip-components 1; \
+    curl -L https://github.com/libusb/libusb/releases/download/v$LIBUSB_VERSION/libusb-$LIBUSB_VERSION.tar.bz2 | tar xvj --strip-components 1; \
     ./configure \
         --disable-shared \
         --enable-static \

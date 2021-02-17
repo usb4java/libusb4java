@@ -5,6 +5,8 @@
 
 FROM debian:stretch
 
+ENV LIBUSB_VERSION=1.0.24
+
 # Install debian updates
 RUN apt-get update && apt-get upgrade -y
 
@@ -37,7 +39,7 @@ RUN mkdir -p /tmp/eudev; \
 # Install libusb
 RUN mkdir -p /tmp/libusb; \
     cd /tmp/libusb; \
-    curl -L http://downloads.sf.net/project/libusb/libusb-1.0/libusb-1.0.22/libusb-1.0.22.tar.bz2 | tar xvj --strip-components 1; \
+    curl -L https://github.com/libusb/libusb/releases/download/v$LIBUSB_VERSION/libusb-$LIBUSB_VERSION.tar.bz2 | tar xvj --strip-components 1; \
     export PATH=/opt/tools/arm-bcm2708/arm-linux-gnueabihf/bin:$PATH; \
     export CFLAGS=-I/usr/local/include; \
     export CPPFLAGS=-I/usr/local/include; \
