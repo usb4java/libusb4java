@@ -8,6 +8,7 @@ already includes prebuilt libraries for the following platforms:
 * win32-x86
 * win32-x86-64
 * darwin-x86-64
+* darwin-arm-64
 
 If you need the library on an other platform then you can easily compile it
 yourself.  On a Unix-compatible operating system you only need the Java JDK,
