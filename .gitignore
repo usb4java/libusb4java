@@ -3,3 +3,5 @@
 .vscode
 target
 /build
+/.vs
+/out/build/x64-Debug
