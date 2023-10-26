@@ -3,14 +3,19 @@
 # See LICENSE.md for licensing information.
 #
 
-ARG DEBARCH
-FROM $DEBARCH/debian:stretch
-
+FROM debian:stretch
 ENV LIBUSB_VERSION=1.0.24
 
 # Copy optional qemu binaries
 ARG ARCH
 COPY target/build/linux-$ARCH/qemu* /usr/bin/
+
+RUN sed -i 's|deb.debian.org|archive.debian.org|g' /etc/apt/sources.list
+RUN sed -i 's|security.debian.org|archive.debian.org|g' /etc/apt/sources.list
+RUN sed -i '/stretch-updates/d' /etc/apt/sources.list
+
+RUN apt-get -y update --fix-missing && \
+    apt-get --no-install-recommends install -y apt-utils
 
 # Install debian updates
 RUN apt-get update && apt-get upgrade -y
