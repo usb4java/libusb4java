@@ -4,7 +4,7 @@
 #
 
 ARG DEBARCH
-FROM $DEBARCH/debian:stretch
+FROM $DEBARCH/debian:bookworm
 
 ENV LIBUSB_VERSION=1.0.24
 
