@@ -22,13 +22,15 @@ mkdir -p target/bundle
 
 # Download latest snapshot platform JARs
 PLATFORMS="
-    linux-x86-64
     linux-x86
+    linux-x86-64
     linux-arm
+    linux-armel
     linux-aarch64
     win32-x86
     win32-x86-64
     darwin-x86-64
+    darwin-aarch64
 "
 for PLATFORM in $PLATFORMS
 do
