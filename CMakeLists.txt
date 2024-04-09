@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.14)
 
 project(usb4java C)
 set(PROJECT_VERSION 1.3.1)
