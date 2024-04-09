@@ -69,7 +69,7 @@ docker run \
     usb4java-build-$ARCH \
     /bin/bash -c "
         cd /workspace/$BUILD;
-        JAVA_HOME=/usr/lib/jvm/java-gcj-6 cmake ../../.. \
+        cmake ../../.. \
             -DCMAKE_BUILD_TYPE=Release \
             -DCMAKE_INSTALL_PREFIX='' \
             -DLibUsb_LIBRARIES='/usr/local/lib/libusb-1.0.a;/usr/local/lib/libudev.a' \
