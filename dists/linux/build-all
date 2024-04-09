@@ -16,8 +16,11 @@ cd $(dirname $0)
 # Build X86-64 library
 ./build x86-64
 
-# Build AARCH64 library
-./build aarch64 /usr/bin/qemu-aarch64-static
+# Build ARM 64-bit library (ARMv8 and higher)
+./build aarch64
 
-# Build ARM library
-./build-arm
+# Build ARM 32-bit library (ARMv7 and higher)
+./build arm
+
+# Build ARM 32-bit library (ARMv4T and higher)
+./build armel

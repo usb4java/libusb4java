@@ -4,6 +4,7 @@ already includes prebuilt libraries for the following platforms:
 * linux-x86
 * linux-x86-64
 * linux-arm
+* linux-armel
 * linux-aarch64
 * win32-x86
 * win32-x86-64

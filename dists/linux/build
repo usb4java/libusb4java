@@ -27,16 +27,28 @@ BUILD=$TARGET/build/$OS-$ARCH
 # Map specified architecture to a debian docker image architecture
 case $ARCH in
     x86-64)
-        DEBARCH=amd64
+        DOCKER_ARCH=amd64
+        OS_ARCH=amd64
         ;;
     x86)
-        DEBARCH=i386
+        DOCKER_ARCH=i386
+        OS_ARCH=i386
+        ;;
+    aarch64)
+        DOCKER_ARCH=arm64v8
+        OS_ARCH=arm64
         ;;
     arm)
-        DEBARCH=armhf
+        DOCKER_ARCH=arm32v7
+        OS_ARCH=armhf
+        ;;
+    armel)
+        DOCKER_ARCH=arm32v5
+        OS_ARCH=armel
         ;;
     *)
-        DEBARCH=$ARCH
+        DOCKER_ARCH=$ARCH
+        OS_ARCH=$ARCH
         ;;
 esac
 
@@ -57,7 +69,8 @@ docker build . \
     --network host \
     -f dists/linux/Dockerfile \
     --build-arg ARCH=$ARCH \
-    --build-arg DEBARCH=$DEBARCH \
+    --build-arg DOCKER_ARCH=$DOCKER_ARCH \
+    --build-arg OS_ARCH=$OS_ARCH \
     -t usb4java-build-$ARCH
 
 # Compile libusb4java in docker image

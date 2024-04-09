@@ -3,26 +3,28 @@
 # See LICENSE.md for licensing information.
 #
 
-ARG DEBARCH
-FROM $DEBARCH/debian:bullseye
+ARG DOCKER_ARCH
+FROM $DOCKER_ARCH/debian:bullseye
+
+ARG OS_ARCH
+ENV JAVA_HOME=/usr/lib/jvm/java-11-openjdk-$OS_ARCH
 
 ENV LIBUSB_VERSION=1.0.24
-ENV JAVA_HOME=/usr/lib/jvm/java-11-openjdk-$DEBARCH
 
 # Copy optional qemu binaries
 ARG ARCH
 COPY target/build/linux-$ARCH/qemu* /usr/bin/
 
 # Install debian updates
-RUN apt-get update && apt-get upgrade -y
+RUN apt update && apt upgrade -y
 
 # Workaround for armhf architecture: This package can't be installed later as a
 # dependency of gcj-6-jdk (Corrupt tarball error messages) but for some reason
 # it works when it is installed beforehand
-RUN apt-get install -y gnome-icon-theme
+RUN apt install -y gnome-icon-theme
 
 # Install required debian packages
-RUN apt-get install -y gcc cmake curl gperf bzip2 openjdk-11-jdk
+RUN apt install -y gcc cmake curl gperf bzip2 openjdk-11-jdk
 
 # Install eudev
 RUN mkdir -p /tmp/eudev; \
