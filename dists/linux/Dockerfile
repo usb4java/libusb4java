@@ -10,6 +10,7 @@ ARG OS_ARCH
 ENV JAVA_HOME=/usr/lib/jvm/java-11-openjdk-$OS_ARCH
 
 ENV LIBUSB_VERSION=1.0.24
+ENV EUDEV_VERSION=3.2.14
 
 # Copy optional qemu binaries
 ARG ARCH
@@ -24,7 +25,7 @@ RUN apt install -y gnome-icon-theme gcc cmake curl gperf bzip2 openjdk-11-jdk
 # Install eudev
 RUN mkdir -p /tmp/eudev; \
     cd /tmp/eudev; \
-    curl -L http://dev.gentoo.org/~blueness/eudev/eudev-3.2.6.tar.gz | tar xvz --strip-components 1; \
+    curl -L https://github.com/eudev-project/eudev/releases/download/v$EUDEV_VERSION/eudev-$EUDEV_VERSION.tar.gz | tar xvz --strip-components 1; \
     ./configure \
         --disable-shared \
         --enable-static \
