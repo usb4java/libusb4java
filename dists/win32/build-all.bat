@@ -11,5 +11,5 @@ for /f "delims=" %%i in ('"%VSWHERE_EXE%" %VSWHERE_OPTIONS%') do set "VS_PATH=%%
 set "VSDEVCMD_BAT=%VS_PATH%\Common7\Tools\VsDevCmd.bat"
 
 rem Main
-"%VSDEVCMD_BAT%" && "%BUILD_BAT%"
-"%VSDEVCMD_BAT%" -host_arch=amd64 -arch=amd64 && set "PLATFORM=x64" && "%BUILD_BAT%"
+cmd /c ""%VSDEVCMD_BAT%" && "%BUILD_BAT%""
+cmd /c ""%VSDEVCMD_BAT%" -host_arch=amd64 -arch=amd64 && set "PLATFORM=x64" && "%BUILD_BAT%""
