@@ -4,10 +4,10 @@
 #
 
 ARG DEBARCH
-FROM $DEBARCH/debian:bookworm
+FROM $DEBARCH/debian:bullseye
 
 ENV LIBUSB_VERSION=1.0.24
-ENV JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+ENV JAVA_HOME=/usr/lib/jvm/java-11-openjdk-$DEBARCH
 
 # Copy optional qemu binaries
 ARG ARCH
@@ -22,7 +22,7 @@ RUN apt-get update && apt-get upgrade -y
 RUN apt-get install -y gnome-icon-theme
 
 # Install required debian packages
-RUN apt-get install -y gcc cmake curl gperf bzip2 openjdk-8-jdk
+RUN apt-get install -y gcc cmake curl gperf bzip2 openjdk-11-jdk
 
 # Install eudev
 RUN mkdir -p /tmp/eudev; \
