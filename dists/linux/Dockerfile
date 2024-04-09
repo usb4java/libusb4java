@@ -18,13 +18,8 @@ COPY target/build/linux-$ARCH/qemu* /usr/bin/
 # Install debian updates
 RUN apt update && apt upgrade -y
 
-# Workaround for armhf architecture: This package can't be installed later as a
-# dependency of gcj-6-jdk (Corrupt tarball error messages) but for some reason
-# it works when it is installed beforehand
-RUN apt install -y gnome-icon-theme
-
 # Install required debian packages
-RUN apt install -y gcc cmake curl gperf bzip2 openjdk-11-jdk
+RUN apt install -y gnome-icon-theme gcc cmake curl gperf bzip2 openjdk-11-jdk
 
 # Install eudev
 RUN mkdir -p /tmp/eudev; \
