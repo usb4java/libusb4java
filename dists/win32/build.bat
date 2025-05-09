@@ -15,7 +15,7 @@ rem ----------------------------------------------------------------------
 rem Setup variables
 rem ----------------------------------------------------------------------
 
-set LIBUSB_VERSION=1.0.24
+set LIBUSB_VERSION=1.0.28
 
 set CURRENT=%cd%
 set PROJECT_DIR=%~dp0..\..

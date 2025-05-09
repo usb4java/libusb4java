@@ -4,12 +4,12 @@
 #
 
 ARG DOCKER_ARCH
-FROM $DOCKER_ARCH/debian:bullseye
+FROM $DOCKER_ARCH/debian:bookworm
 
 ARG OS_ARCH
-ENV JAVA_HOME=/usr/lib/jvm/java-11-openjdk-$OS_ARCH
+ENV JAVA_HOME=/usr/lib/jvm/java-17-openjdk-$OS_ARCH
 
-ENV LIBUSB_VERSION=1.0.24
+ENV LIBUSB_VERSION=1.0.28
 ENV EUDEV_VERSION=3.2.14
 
 # Copy optional qemu binaries
@@ -20,7 +20,7 @@ COPY target/build/linux-$ARCH/qemu* /usr/bin/
 RUN apt update && apt upgrade -y
 
 # Install required debian packages
-RUN apt install -y gnome-icon-theme gcc cmake curl gperf bzip2 openjdk-11-jdk
+RUN apt install -y gnome-icon-theme gcc cmake curl gperf bzip2 openjdk-17-jdk
 
 # Install eudev
 RUN mkdir -p /tmp/eudev; \
